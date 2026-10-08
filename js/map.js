@@ -122,7 +122,9 @@
   function render() {
     const host = $("map-svg"); if (!host || !FEATS.length || !D.S.valid) return;
     compute();
-    if (M.sel && !FEATS.includes(M.sel)) M.sel = null;
+    const dsel = D.S.filters.district;
+    if (dsel) { const hit = [...M.byFeat.values()].find((x) => x.name === dsel); M.sel = hit ? hit.f : M.sel; }
+    else if (M.sel && M.byFeat.get(M.sel)) M.sel = null;
     const s = svgMarkup(M.sel);
     host.innerHTML = `<svg viewBox="${s.vb.map((v) => v.toFixed(3)).join(" ")}" xmlns="${NS}" role="img" aria-label="${esc(t("mapTitle"))}" preserveAspectRatio="xMidYMid meet">${s.markup}</svg>`;
     host.firstChild.style.aspectRatio = s.vb[2] + " / " + s.vb[3];
@@ -131,6 +133,13 @@
     $("map-card").innerHTML = cardHtml(M.sel);
     const un = $("map-note"); un.textContent = M.unmatched.length ? t("mapUnmatched") + " " + [...new Set(M.unmatched)].join(", ") : "";
     const p = document.querySelector("#map-svg .md.sel"); if (p && p.parentNode) p.parentNode.appendChild(p);
+  }
+
+  // clique: filtra o resto do painel pelo distrito (se tiver dados) e mostra o cartão
+  function pick(f) {
+    const d = M.byFeat.get(f);
+    if (d && d.lri != null && d.name) { if (D.S.filters.district !== d.name) { M.sel = f; } D.toggleFilter("district", d.name); }
+    else select(M.sel === f ? null : f);
   }
 
   function bind() {
@@ -147,10 +156,10 @@
     host.addEventListener("mouseleave", () => (tip.hidden = true));
     host.addEventListener("click", (e) => {
       const p = e.target.closest && e.target.closest(".md"); if (!p) return;
-      const f = FEATS[+p.dataset.i]; select(M.sel === f ? null : f);
+      pick(FEATS[+p.dataset.i]);
     });
     $("map-list").addEventListener("click", (e) => {
-      const b = e.target.closest(".ml-i"); if (b) select(FEATS[+b.dataset.i]);
+      const b = e.target.closest(".ml-i"); if (b) pick(FEATS[+b.dataset.i]);
     });
   }
 
@@ -170,11 +179,5 @@
 
   window.LRI_MAP = { render, image, items: () => M.items };
   bind();
-  const base = D.render;
-  D.render = function () { base(); render(); };
-  window.addEventListener("lri-lang", () => setTimeout(render, 0));
-  // o dashboard chama render() directamente ao receber dados: encapsula também
-  const set = D.set; D.set = function (v) { set(v); render(); };
-  const f = D.S.filters; // sem uso extra: filtros alteram render interno -> observa selects
-  ["f-year", "f-province", "f-district"].forEach((id) => { const el = $(id); if (el) el.addEventListener("change", () => setTimeout(render, 0)); });
+  window.addEventListener("lri-render", render);
 })();

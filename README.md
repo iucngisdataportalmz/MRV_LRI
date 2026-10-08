@@ -132,3 +132,10 @@ O Dashboard inclui um mapa que pinta cada distrito com a classe do LRI geral (s�
 - Geometria: `data/districts.js` (gerado do shapefile `Admin_Level_2_2017`, simplificado, ~300 KB).
 - Os distritos dos dados ligam-se ao mapa pelo nome (sem acentos/maiúsculas; «Cidade de X» = «X»). Distritos que não encontrarem correspondência aparecem numa nota por baixo da lista.
 - Para actualizar o shapefile: `python3 tools/shp_to_js.py caminho/Admin_Level_2_2017 0.004` (sem extensão; usa .shp e .dbf com campos DISTRITO e PROVINCIA).
+
+## Gráficos interativos
+
+- **Passar o rato** sobre barras, pontos, fatias, células do mapa de calor e distritos do mapa mostra o valor (e a classe).
+- **Clicar** filtra o resto do painel: indicador (barras, radar, tabelas, linhas do mapa de calor), classe (gráfico circular), pilar (cartões dos pilares e gráfico de distribuição), distrito (mapa, lista, barras por distrito, colunas do mapa de calor) e ano (gráfico de evolução). Clicar outra vez remove o filtro.
+- A barra «Filtros activos» mostra o que está aplicado; cada filtro remove-se com um clique, ou todos com «Limpar filtros».
+- Os cartões do LRI geral/pilares e o mapa de distritos não são reduzidos pelos filtros de indicador/classe/pilar (são o resumo). As tabelas, gráficos, registos e as exportações (PDF/Excel/CSV) seguem os filtros activos.

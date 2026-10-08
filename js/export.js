@@ -9,7 +9,11 @@
   const stamp = () => { const d = new Date(), p = (n) => String(n).padStart(2, "0"); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`; };
   const filtersText = () => {
     const f = D.S.filters;
-    return `${t("fYear")}: ${f.year || t("fAll")} | ${t("fProvince")}: ${f.province || t("fAll")} | ${t("fDistrict")}: ${f.district || t("fAll")}`;
+    const X = D.S.cross || {}, ex = [];
+    if (X.pillar) ex.push(`${t("pillar")}: ${iname((C.PILLARS.find((p) => p.id === X.pillar) || {}))}`);
+    if (X.cls) ex.push(`${t("classCol")}: ${t(X.cls)}`);
+    if (X.ind) { const i = C.IND.find((q) => q.n === X.ind); if (i) ex.push(`${t("indicator")}: ${i.n}. ${iname(i)}`); }
+    return `${t("fYear")}: ${f.year || t("fAll")} | ${t("fProvince")}: ${f.province || t("fAll")} | ${t("fDistrict")}: ${f.district || t("fAll")}` + (ex.length ? " | " + ex.join(" | ") : "");
   };
   // jsPDF (Helvetica/WinAnsi) não tem alguns símbolos
   const clean = (s) => String(s == null ? "" : s).replace(/≥/g, ">=").replace(/≤/g, "<=").replace(/[▲▼⚠→]/g, "").replace(/[^\x00-\xFF–—‘’“”…•]/g, "");
@@ -110,7 +114,7 @@
     h2(t("secLRI"));
     doc.autoTable(tableOpts({
       head: [[t("pillar"), t("scoreCol"), t("classCol"), t("indicatorsN")]],
-      body: [[{ content: clean(t("lriOverall")), styles: { fontStyle: "bold" } }, { content: m.main.lri == null ? "–" : f2(m.main.lri), styles: { fontStyle: "bold" } }, clsStyle(m.main.cls), `${m.main.inds.length}/${C.IND.length}`]]
+      body: [[{ content: clean(t("lriOverall")), styles: { fontStyle: "bold" } }, { content: m.main.lri == null ? "–" : f2(m.main.lri), styles: { fontStyle: "bold" } }, clsStyle(m.main.cls), `${(m.main.allInds || m.main.inds).length}/${C.IND.length}`]]
         .concat(m.main.pillars.map((p) => [clean(iname(p.pillar)), p.score == null ? "–" : f2(p.score), clsStyle(p.cls), p.nInd])),
       columnStyles: { 1: { halign: "center" }, 3: { halign: "center" } }
     }));

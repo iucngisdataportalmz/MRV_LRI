@@ -124,3 +124,11 @@ Bibliotecas (via CDN cdnjs, versões fixas): Chart.js 4.4.1 · jsPDF 2.5.1 · js
 
 * **Relatório PDF** (botão no Dashboard): cartões do LRI, indicadores de apoio, todos os gráficos, mapa de calor, tabelas, registos e metodologia, no idioma ativo e respeitando os filtros (ano/distrito).
 * **Dados Excel**: resumo, pilares, indicadores, sub-indicadores, mapa de calor e registos. **CSV** dos registos na tabela “Registos / dados”.
+
+## Mapa de distritos
+
+O Dashboard inclui um mapa que pinta cada distrito com a classe do LRI geral (só dados validados), com painel lateral (legenda, cartão do distrito clicado e lista ordenada). Respeita os filtros Ano e Província (com província escolhida, o mapa faz zoom). Está incluído no relatório PDF.
+
+- Geometria: `data/districts.js` (gerado do shapefile `Admin_Level_2_2017`, simplificado, ~300 KB).
+- Os distritos dos dados ligam-se ao mapa pelo nome (sem acentos/maiúsculas; «Cidade de X» = «X»). Distritos que não encontrarem correspondência aparecem numa nota por baixo da lista.
+- Para actualizar o shapefile: `python3 tools/shp_to_js.py caminho/Admin_Level_2_2017 0.004` (sem extensão; usa .shp e .dbf com campos DISTRITO e PROVINCIA).

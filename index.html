@@ -65,6 +65,21 @@
       <h2 class="sec" data-i18n="secLRI">LRI geral e por pilar</h2>
       <div class="kpis" id="kpis"></div>
 
+      <article class="card full" id="map-section">
+        <h3 data-i18n="mapTitle">Mapa do LRI por distrito</h3>
+        <p class="muted" data-i18n="mapSub"></p>
+        <div class="mapbox">
+          <div class="map-wrap"><div id="map-svg" class="map-svg"></div><div id="map-tip" class="map-tip" hidden></div></div>
+          <aside class="map-panel">
+            <ul id="map-legend" class="map-legend"></ul>
+            <div id="map-card" class="map-card"></div>
+            <h4 data-i18n="mapList">Distritos com dados</h4>
+            <div id="map-list" class="map-list"></div>
+            <p id="map-note" class="muted"></p>
+          </aside>
+        </div>
+      </article>
+
       <h2 class="sec" data-i18n="secInterp">Indicadores de apoio à interpretação</h2>
       <div class="interp" id="interp"></div>
 
@@ -182,6 +197,8 @@
 <script src="js/data.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/logos.js"></script>
+<script src="data/districts.js"></script>
+<script src="js/map.js"></script>
 <script src="js/export.js"></script>
 <script src="data/documents.js"></script>
 <script src="js/docs.js"></script>

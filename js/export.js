@@ -148,6 +148,31 @@
     putPair("c-radar", "c-dist", t("secRadar"), t("secDistPillar"), 100);
     putPair("c-evo", null, t("secEvolution"), "", 80);
 
+    // mapa de distritos (mapa à esquerda, lista à direita)
+    if (window.LRI_MAP) {
+      const mi = await window.LRI_MAP.image(700), items = window.LRI_MAP.items();
+      if (mi) {
+        const prov = D.S.filters.province, pk = (v) => String(v || "").toLowerCase();
+        const list = items.filter((x) => !prov || pk(x.province) === pk(prov));
+        const mw = 72, mh = Math.min(170, (mw * mi.h) / mi.w), w2 = (mh * mi.w) / mi.h;
+        doc.addPage(); y = 22; h2(t("mapTitle"));
+        doc.addImage(mi.url, "JPEG", M, y, w2, mh);
+        const x0 = M + mw + 6, y0 = y;
+        // legenda
+        CFG.classes.slice().reverse().concat([{ key: null, color: "#d9d6ca" }]).forEach((c, i) => {
+          const yy = y0 + i * 6; doc.setFillColor(...hex(c.color)).rect(x0, yy, 4, 4, "F");
+          doc.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(60, 70, 65).text(clean(c.key ? t(c.key) : t("mapNoData")), x0 + 6, yy + 3.2);
+        });
+        doc.autoTable(tableOpts({
+          startY: y0 + 34, margin: { left: x0, right: M, top: 22, bottom: 16 },
+          head: [[t("district"), "LRI", t("classCol"), t("mapRecords")]],
+          body: list.map((x) => [clean(x.name), f2(x.lri), clsStyle(x.cls), x.n]),
+          columnStyles: { 1: { halign: "center" }, 3: { halign: "center" } }
+        }));
+        y = Math.max(doc.lastAutoTable.finalY, y0 + mh) + 4;
+      }
+    }
+
     // mapa de calor (distrito + total) e por ano
     const heat = (mode, title) => {
       const hd = D.heatData(m, mode); if (!hd.rows.length) return;

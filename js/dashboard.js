@@ -13,7 +13,7 @@
   const f2 = (n) => I.fmt(n, 2);
   const textOn = (k) => (k === "moderate" || k === "good" ? "#1d2a24" : "#fff");
 
-  const S = { valid: [], filters: { year: "", district: "" }, heat: "district", sub: "", page: 0, q: "", charts: {}, model: null, tableRecs: [] };
+  const S = { valid: [], filters: { year: "", province: "", district: "" }, heat: "district", sub: "", page: 0, q: "", charts: {}, model: null, tableRecs: [] };
   window.DASH = { S };
 
   Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
@@ -48,9 +48,10 @@
 
   // ---------------------------------------------------------------- filtros
   function fillFilters(m) {
-    const ys = $("f-year"), ds = $("f-district");
+    const ys = $("f-year"), ds = $("f-district"), ps = $("f-province");
     const opt = (v, l, sel) => `<option value="${esc(v)}"${sel ? " selected" : ""}>${esc(l)}</option>`;
     ys.innerHTML = opt("", t("fAll"), !S.filters.year) + m.years.map((y) => opt(y, y, String(S.filters.year) === String(y))).join("");
+    ps.innerHTML = opt("", t("fAll"), !S.filters.province) + m.provinces.map((p) => opt(p, p, S.filters.province === p)).join("");
     ds.innerHTML = opt("", t("fAll"), !S.filters.district) + m.districts.map((d) => opt(d, d, S.filters.district === d)).join("");
   }
 
@@ -290,12 +291,13 @@
   function render() {
     const m = L.build(S.valid, S.filters);
     S.model = m;
-    S.tableRecs = S.valid.filter((r) => (!S.filters.year || String(r.year) === String(S.filters.year)) && (!S.filters.district || r.district === S.filters.district));
+    S.tableRecs = S.valid.filter((r) => (!S.filters.year || String(r.year) === String(S.filters.year)) && (!S.filters.province || r.province === S.filters.province) && (!S.filters.district || r.district === S.filters.district));
     fillFilters(m); renderKpis(m); renderInterp(m); renderCharts(m); renderTables(m); renderHeat(m); renderRecords(); renderQuality(m);
   }
 
   function bind() {
     $("f-year").onchange = (e) => { S.filters.year = e.target.value; S.page = 0; render(); };
+    $("f-province").onchange = (e) => { S.filters.province = e.target.value; S.filters.district = ""; S.page = 0; render(); };
     $("f-district").onchange = (e) => { S.filters.district = e.target.value; S.page = 0; render(); };
     $("f-sub").onchange = (e) => { S.sub = e.target.value; renderHist(S.model); };
     $("rec-search").oninput = (e) => { S.q = e.target.value; S.page = 0; renderRecords(); };

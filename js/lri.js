@@ -74,8 +74,11 @@
   }
 
   // --- modelo completo do dashboard ----------------------------------------
-  function build(valid, filters) {
+  function build(allValid, filters) {
     filters = filters || {};
+    const provinces = [...new Set(allValid.map((r) => r.province).filter(Boolean))].sort();
+    // o filtro de província restringe TUDO (anos, distritos, evolução, comparação…)
+    const valid = filters.province ? allValid.filter((r) => r.province === filters.province) : allValid;
     let recs = valid.filter((r) => r.ind);
     if (filters.year) recs = recs.filter((r) => String(r.year) === String(filters.year));
     if (filters.district) recs = recs.filter((r) => r.district === filters.district);
@@ -122,13 +125,13 @@
       const idx = evo.indexOf(cur);
       if (idx > 0) { delta = cur.lri - evo[idx - 1].lri; prevYear = evo[idx - 1].year; curYear = cur.year; }
     }
-    const provinces = [...new Set(recs.map((r) => r.province).filter(Boolean))];
+    const covProvinces = [...new Set(recs.map((r) => r.province).filter(Boolean))];
     const covDistricts = [...new Set(recs.map((r) => r.district).filter(Boolean))];
     const priorities = main.inds.filter((i) => i.score != null).slice().sort((a, b) => a.score - b.score).filter((i) => i.score < 2.5).slice(0, 5);
 
     return {
-      recs, main, years, districts, evolution, byDistrict, colsD, colsY,
-      interp: { poor, strong, weakest, gap, nextClass, delta, prevYear, curYear, provinces, covDistricts, priorities,
+      recs, main, years, districts, provinces, evolution, byDistrict, colsD, colsY,
+      interp: { poor, strong, weakest, gap, nextClass, delta, prevYear, curYear, provinces: covProvinces, covDistricts, priorities,
         indicatorsCovered: main.inds.length, indicatorsTotal: C.IND.length }
     };
   }

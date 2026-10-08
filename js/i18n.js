@@ -1,4 +1,4 @@
-/* Traduções PT / EN : interface pública, gráficos, tabelas e relatórios */
+/* Traduções PT / EN: interface pública, gráficos, tabelas e relatórios */
 (function () {
   const T = {
     pt: {
@@ -11,7 +11,7 @@
       refresh: "Atualizar", updated: "Atualizado", demoBanner: "MODO DEMONSTRAÇÃO: dados fictícios apenas para pré-visualizar o layout.",
       loadError: "Não foi possível carregar os dados do Feature Service.", retry: "Tentar novamente",
       loading: "A carregar dados validados…", noData: "Sem dados validados para os filtros selecionados.",
-      fYear: "Ano", fDistrict: "Distrito", fAll: "Todos", fAllM: "Todas",
+      fYear: "Ano", fProvince: "Província", fDistrict: "Distrito", fAll: "Todos", fAllM: "Todas",
       onlyValidated: "Apenas dados validados são apresentados e usados no cálculo.",
       secLRI: "LRI geral e por pilar", lriOverall: "LRI geral", score: "Pontuação", class: "Classe", indicatorsN: "indicadores",
       secInterp: "Indicadores de apoio à interpretação",
@@ -22,7 +22,7 @@
       prioText: "Reforçar ações nos indicadores com pontuação abaixo de 2,5, começando pelos mais baixos:",
       prioNone: "Nenhum indicador abaixo de 2,5.", strongText: "Indicadores com pontuação ≥ 2,5 (classe Bom ou Excelente):", strongNone: "Ainda sem indicadores nas classes Bom/Excelente.",
       secIndBar: "Pontuação por indicador", secClassPie: "Distribuição por classe", secRadar: "Radar por indicador",
-      secDistPillar: "Comparação por distrito e pilar", secEvolution: "Evolução do LRI", secHeat: "Mapa de calor: Pilar, indicador e sub-indicador × distrito",
+      secDistPillar: "Comparação por distrito e pilar", secEvolution: "Evolução do LRI", secHeat: "Mapa de calor: indicador e sub-indicador × distrito",
       heatByDistrict: "Por distrito (e total)", heatByYear: "Por ano", total: "Total",
       secSubTable: "Detalhe dos sub-indicadores", secIndTable: "Detalhe dos indicadores",
       secValDist: "Distribuição dos valores", secScoreDist: "Distribuição das pontuações dos sub-indicadores por pilar",
@@ -79,10 +79,10 @@
       navDashboard: "Dashboard", navTech: "Technical", navSubmit: "Data submission", navValidate: "Validation",
       skip: "Skip to content",
       exportPdf: "PDF report", exportXlsx: "Excel data", exportCsv: "CSV", download: "Download",
-      refresh: "Refresh", updated: "Updated", demoBanner: "DEMO MODE: fictitious data, only to preview the layout.",
+      refresh: "Refresh", updated: "Updated", demoBanner: "DEMO MODE:fictitious data, only to preview the layout.",
       loadError: "Could not load data from the Feature Service.", retry: "Try again",
       loading: "Loading validated data…", noData: "No validated data for the selected filters.",
-      fYear: "Year", fDistrict: "District", fAll: "All", fAllM: "All",
+      fYear: "Year", fProvince: "Province", fDistrict: "District", fAll: "All", fAllM: "All",
       onlyValidated: "Only validated data is shown and used in the calculation.",
       secLRI: "Overall LRI and by pillar", lriOverall: "Overall LRI", score: "Score", class: "Class", indicatorsN: "indicators",
       secInterp: "Interpretation support indicators",
@@ -93,7 +93,7 @@
       prioText: "Strengthen action on indicators scoring below 2.5, starting with the lowest:",
       prioNone: "No indicator below 2.5.", strongText: "Indicators scoring ≥ 2.5 (Good or Excellent class):", strongNone: "No indicators in the Good/Excellent classes yet.",
       secIndBar: "Score by indicator", secClassPie: "Distribution by class", secRadar: "Radar by indicator",
-      secDistPillar: "Comparison by district and pillar", secEvolution: "LRI trend", secHeat: "Heatmap: Pilar, indicator and sub-indicator × district",
+      secDistPillar: "Comparison by district and pillar", secEvolution: "LRI trend", secHeat: "Heatmap: indicator and sub-indicator × district",
       heatByDistrict: "By district (and total)", heatByYear: "By year", total: "Total",
       secSubTable: "Sub-indicator detail", secIndTable: "Indicator detail",
       secValDist: "Value distribution", secScoreDist: "Sub-indicator score distribution by pillar",

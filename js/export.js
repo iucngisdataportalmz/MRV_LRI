@@ -9,7 +9,7 @@
   const stamp = () => { const d = new Date(), p = (n) => String(n).padStart(2, "0"); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`; };
   const filtersText = () => {
     const f = D.S.filters;
-    return `${t("fYear")}: ${f.year || t("fAll")} | ${t("fDistrict")}: ${f.district || t("fAll")}`;
+    return `${t("fYear")}: ${f.year || t("fAll")} | ${t("fProvince")}: ${f.province || t("fAll")} | ${t("fDistrict")}: ${f.district || t("fAll")}`;
   };
   // jsPDF (Helvetica/WinAnsi) não tem alguns símbolos
   const clean = (s) => String(s == null ? "" : s).replace(/≥/g, ">=").replace(/≤/g, "<=").replace(/[▲▼⚠→]/g, "").replace(/[^\x00-\xFF–—‘’“”…•]/g, "");

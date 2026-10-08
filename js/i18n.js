@@ -1,4 +1,4 @@
-/* Traduções PT / EN — interface pública, gráficos, tabelas e relatórios */
+/* Traduções PT / EN : interface pública, gráficos, tabelas e relatórios */
 (function () {
   const T = {
     pt: {
@@ -8,7 +8,7 @@
       navDashboard: "Dashboard", navTech: "Técnica", navSubmit: "Submissão de dados", navValidate: "Validação",
       skip: "Saltar para o conteúdo",
       exportPdf: "Relatório PDF", exportXlsx: "Dados Excel", exportCsv: "CSV", download: "Descarregar",
-      refresh: "Atualizar", updated: "Atualizado", demoBanner: "MODO DEMONSTRAÇÃO — dados fictícios apenas para pré-visualizar o layout.",
+      refresh: "Atualizar", updated: "Atualizado", demoBanner: "MODO DEMONSTRAÇÃO: dados fictícios apenas para pré-visualizar o layout.",
       loadError: "Não foi possível carregar os dados do Feature Service.", retry: "Tentar novamente",
       loading: "A carregar dados validados…", noData: "Sem dados validados para os filtros selecionados.",
       fYear: "Ano", fDistrict: "Distrito", fAll: "Todos", fAllM: "Todas",
@@ -38,11 +38,11 @@
       subsCount: "sub-indicadores", assumedWarn: "Regra assumida (texto do sub-indicador não reconhecido)",
       mixedUnits: "(vários)",
       techTitle: "Área técnica", techIntro: "Recolha e validação de dados. Novos registos entram como Pendente; só passam ao Dashboard depois de validados.",
-      flowSubmit: "Submissão", flowSubmitD: "Sem login — formulário Survey123", flowPending: "Pendente", flowPendingD: "Todo o novo registo",
+      flowSubmit: "Submissão", flowSubmitD: "Sem login: formulário Survey123", flowPending: "Pendente", flowPendingD: "Todo o novo registo",
       flowValidate: "Validação", flowValidateD: "Técnico com login ArcGIS", flowDash: "Dashboard", flowDashD: "Só dados Validados",
       tabSubmit: "Submissão de dados", tabValidate: "Validação de dados",
       submitHead: "Submissão de dados (Survey123)", submitDesc: "Formulário público: não é necessário login. O registo é guardado como Pendente.",
-      validateHead: "Validação de dados (ArcGIS Experience)", validateDesc: "Acesso restrito — inicie sessão com utilizador e palavra-passe do ArcGIS Online. Validado → aparece no Dashboard · Rejeitado → fica fora do Dashboard.",
+      validateHead: "Validação de dados (ArcGIS Experience)", validateDesc: "Acesso restrito: inicie sessão com utilizador e palavra-passe do ArcGIS Online. Validado → aparece no Dashboard · Rejeitado → fica fora do Dashboard.",
       openNew: "Abrir em nova janela", embedHint: "Se o formulário não carregar aqui (bloqueio de cookies de terceiros no navegador), use “Abrir em nova janela”.",
       statusCounts: "Estado dos registos na base de dados",
       devBy: "Desenvolvido por",
@@ -65,7 +65,7 @@
 <p>A <em>variação</em> compara o LRI do ano em análise com o do ano anterior com dados; a <em>lacuna</em> é a diferença entre o LRI e o limite inferior da classe seguinte; as <em>prioridades de intervenção</em> são os indicadores com pontuação inferior a 2,5 (até cinco, dos mais baixos); os <em>pontos fortes</em> são os indicadores com pontuação ≥ 2,5. O ano de cada registo é o da data de coleta (ou, na falta desta, da data de submissão).</p>
 <h3>Qualidade dos dados e limitações</h3>
 <ul>
-<li>O LRI só é tão representativo quanto a cobertura: o n.º de indicadores, sub-indicadores e distritos com dados validados é apresentado nos cartões e tabelas. Indicadores sem dados <strong>não</strong> contam como zero — ficam fora da média.</li>
+<li>O LRI só é tão representativo quanto a cobertura: o n.º de indicadores, sub-indicadores e distritos com dados validados é apresentado nos cartões e tabelas. Indicadores sem dados <strong>não</strong> contam como zero: ficam fora da média.</li>
 <li>Cada sub-indicador depende do número de registos (<em>n</em>); médias com n baixo devem ser interpretadas com cautela.</li>
 <li>Registos cujo indicador ou sub-indicador não é reconhecido pelo catálogo ficam excluídos do cálculo; quando só o sub-indicador não é reconhecido, é aplicada a regra do primeiro sub-indicador do indicador e o registo é sinalizado.</li>
 <li>O indicador “Valor médio” só é apresentado quando o indicador tem um único sub-indicador (unidades comparáveis).</li>
@@ -79,7 +79,7 @@
       navDashboard: "Dashboard", navTech: "Technical", navSubmit: "Data submission", navValidate: "Validation",
       skip: "Skip to content",
       exportPdf: "PDF report", exportXlsx: "Excel data", exportCsv: "CSV", download: "Download",
-      refresh: "Refresh", updated: "Updated", demoBanner: "DEMO MODE — fictitious data, only to preview the layout.",
+      refresh: "Refresh", updated: "Updated", demoBanner: "DEMO MODE: fictitious data, only to preview the layout.",
       loadError: "Could not load data from the Feature Service.", retry: "Try again",
       loading: "Loading validated data…", noData: "No validated data for the selected filters.",
       fYear: "Year", fDistrict: "District", fAll: "All", fAllM: "All",
@@ -109,11 +109,11 @@
       subsCount: "sub-indicators", assumedWarn: "Assumed rule (sub-indicator text not recognised)",
       mixedUnits: "(various)",
       techTitle: "Technical area", techIntro: "Data collection and validation. New records enter as Pending and only reach the Dashboard once validated.",
-      flowSubmit: "Submission", flowSubmitD: "No login — Survey123 form", flowPending: "Pending", flowPendingD: "Every new record",
+      flowSubmit: "Submission", flowSubmitD: "No login: Survey123 form", flowPending: "Pending", flowPendingD: "Every new record",
       flowValidate: "Validation", flowValidateD: "Technician with ArcGIS login", flowDash: "Dashboard", flowDashD: "Validated data only",
       tabSubmit: "Data submission", tabValidate: "Data validation",
       submitHead: "Data submission (Survey123)", submitDesc: "Public form: no login required. The record is saved as Pending.",
-      validateHead: "Data validation (ArcGIS Experience)", validateDesc: "Restricted access — sign in with an ArcGIS Online username and password. Validated → appears on the Dashboard · Rejected → stays off the Dashboard.",
+      validateHead: "Data validation (ArcGIS Experience)", validateDesc: "Restricted access: sign in with an ArcGIS Online username and password. Validated → appears on the Dashboard · Rejected → stays off the Dashboard.",
       openNew: "Open in new window", embedHint: "If the form does not load here (third-party cookies blocked by your browser), use “Open in new window”.",
       statusCounts: "Record status in the database",
       devBy: "Developed by",
@@ -136,7 +136,7 @@
 <p><em>Change</em> compares the LRI of the year under analysis with the previous year that has data; the <em>gap</em> is the difference between the LRI and the lower bound of the next class; <em>intervention priorities</em> are indicators scoring below 2.5 (up to five, lowest first); <em>strengths</em> are indicators scoring ≥ 2.5. A record’s year is that of its collection date (or, if missing, its submission date).</p>
 <h3>Data quality and limitations</h3>
 <ul>
-<li>The LRI is only as representative as its coverage: the number of indicators, sub-indicators and districts with validated data is shown in the cards and tables. Indicators without data do <strong>not</strong> count as zero — they are left out of the average.</li>
+<li>The LRI is only as representative as its coverage: the number of indicators, sub-indicators and districts with validated data is shown in the cards and tables. Indicators without data do <strong>not</strong> count as zero: they are left out of the average.</li>
 <li>Each sub-indicator depends on its number of records (<em>n</em>); means with low n should be read with caution.</li>
 <li>Records whose indicator or sub-indicator is not recognised by the catalogue are excluded from the calculation; when only the sub-indicator is unrecognised, the rule of the indicator’s first sub-indicator is applied and the record is flagged.</li>
 <li>“Mean value” for an indicator is shown only when it has a single sub-indicator (comparable units).</li>

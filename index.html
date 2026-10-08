@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Land Resilience Index · MRV</title>
+  <meta name="description" content="Plataforma MRV do Land Resilience Index (LRI) — dashboard público, submissão e validação de dados. / MRV platform for the Land Resilience Index.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Saltar para o conteúdo</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="partners" aria-label="MOZ · SUSTAIN">
+      <img src="assets/logo-moz.svg" alt="Moçambique" class="logo-moz" height="44">
+      <span class="sep" aria-hidden="true"></span>
+      <img src="assets/logo-sustain.png" alt="SUSTAIN — Sustainability and Inclusion Strategy for Growth Corridors in Africa" class="logo-sustain" height="38">
+    </div>
+    <a class="brand" href="#dashboard" aria-label="LRI">
+      <span><strong data-i18n="appName">Land Resilience Index</strong><small data-i18n="appSub">Plataforma MRV</small></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#dashboard" id="nav-dashboard" data-i18n="navDashboard">Dashboard</a>
+      <a href="#documentos" id="nav-docs" data-i18n="navDocs">Documentos</a>
+      <a href="#tecnica/submissao" id="nav-tecnica" data-i18n="navTech">Técnica</a>
+    </nav>
+    <div class="tools">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ===================== DASHBOARD ===================== -->
+<section id="view-dashboard" class="view">
+  <div class="wrap">
+    <div id="demo-banner" class="banner demo" hidden data-i18n="demoBanner"></div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <label><span data-i18n="fYear">Ano</span>
+          <select id="f-year"></select></label>
+        <label><span data-i18n="fDistrict">Distrito</span>
+          <select id="f-district"></select></label>
+      </div>
+      <div class="actions">
+        <span class="muted small" id="updated"></span>
+        <button class="btn ghost" id="btn-refresh" type="button" data-i18n="refresh">Atualizar</button>
+        <button class="btn" id="btn-pdf" type="button" data-i18n="exportPdf">Relatório PDF</button>
+        <button class="btn" id="btn-xlsx" type="button" data-i18n="exportXlsx">Dados Excel</button>
+      </div>
+    </div>
+    <p class="note" data-i18n="onlyValidated"></p>
+
+    <div id="state" class="state" role="status"></div>
+
+    <div id="dash">
+      <h2 class="sec" data-i18n="secLRI">LRI geral e por pilar</h2>
+      <div class="kpis" id="kpis"></div>
+
+      <h2 class="sec" data-i18n="secInterp">Indicadores de apoio à interpretação</h2>
+      <div class="interp" id="interp"></div>
+
+      <div class="grid2">
+        <article class="card"><h3 data-i18n="secIndBar">Pontuação por indicador</h3><div class="chart tall"><canvas id="c-ind" role="img"></canvas></div><div class="legend" id="lg-class"></div></article>
+        <article class="card"><h3 data-i18n="secClassPie">Distribuição por classe</h3><div class="chart tall"><canvas id="c-pie" role="img"></canvas></div></article>
+        <article class="card"><h3 data-i18n="secRadar">Radar por indicador</h3><div class="chart tall"><canvas id="c-radar" role="img"></canvas></div></article>
+        <article class="card"><h3 data-i18n="secDistPillar">Comparação por distrito e pilar</h3><div class="chart tall"><canvas id="c-dist" role="img"></canvas></div></article>
+      </div>
+
+      <article class="card full"><h3 data-i18n="secEvolution">Evolução do LRI</h3><div class="chart wide"><canvas id="c-evo" role="img"></canvas></div></article>
+
+      <article class="card full">
+        <div class="card-head"><h3 data-i18n="secHeat">Mapa de calor</h3>
+          <div class="seg" role="group"><button type="button" data-heat="district" aria-pressed="true" data-i18n="heatByDistrict">Por distrito</button><button type="button" data-heat="year" aria-pressed="false" data-i18n="heatByYear">Por ano</button></div></div>
+        <div class="table-wrap"><table class="heat" id="t-heat"></table></div>
+        <div class="legend" id="lg-heat"></div>
+      </article>
+
+      <article class="card full"><h3 data-i18n="secSubTable">Detalhe dos sub-indicadores</h3><div class="table-wrap"><table class="data" id="t-sub"></table></div></article>
+      <article class="card full"><h3 data-i18n="secIndTable">Detalhe dos indicadores</h3><div class="table-wrap"><table class="data" id="t-ind"></table></div></article>
+
+      <div class="grid2">
+        <article class="card">
+          <div class="card-head"><h3 data-i18n="secValDist">Distribuição dos valores</h3>
+            <label class="inline"><span class="sr" data-i18n="chooseSub">Sub-indicador</span><select id="f-sub"></select></label></div>
+          <div class="chart tall"><canvas id="c-hist" role="img"></canvas></div>
+        </article>
+        <article class="card"><h3 data-i18n="secScoreDist">Distribuição das pontuações</h3><div class="chart tall"><canvas id="c-scores" role="img"></canvas></div></article>
+      </div>
+
+      <article class="card full">
+        <div class="card-head"><h3 data-i18n="secRecords">Registos / dados</h3>
+          <div class="row-tools">
+            <input id="rec-search" type="search" data-i18n-ph="search" placeholder="Pesquisar…">
+            <button class="btn small" id="btn-csv" type="button" data-i18n="exportCsv">CSV</button>
+            <button class="btn small" id="btn-xlsx2" type="button" data-i18n="exportXlsx">Excel</button>
+          </div></div>
+        <div class="table-wrap"><table class="data" id="t-rec"></table></div>
+        <div class="pager" id="pager"></div>
+      </article>
+
+      <article class="card full prose" id="method">
+        <h2 data-i18n="secMethod">Metodologia e qualidade dos dados</h2>
+        <div id="method-body" data-i18n-html="methodHtml"></div>
+        <div id="quality"></div>
+        <p class="docs-link"><a href="#documentos" data-i18n="methodDocs">Ver documentos metodológicos</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DOCUMENTOS ===================== -->
+<section id="view-docs" class="view" hidden>
+  <div class="wrap">
+    <h2 class="sec first" data-i18n="docsTitle">Documentos metodológicos</h2>
+    <p class="note" data-i18n="docsIntro"></p>
+    <div class="toolbar docs-bar">
+      <div class="seg wrapseg" id="docs-cats" role="group"></div>
+      <input id="docs-search" type="search" data-i18n-ph="search" placeholder="Pesquisar…">
+    </div>
+    <div class="docs" id="docs-list"></div>
+  </div>
+</section>
+
+<!-- ===================== TÉCNICA ===================== -->
+<section id="view-tecnica" class="view" hidden>
+  <div class="wrap">
+    <h2 class="sec first" data-i18n="techTitle">Área técnica</h2>
+    <p class="note" data-i18n="techIntro"></p>
+
+    <ol class="flow" aria-label="workflow">
+      <li><b data-i18n="flowSubmit">Submissão</b><span data-i18n="flowSubmitD"></span></li>
+      <li class="s-pend"><b data-i18n="flowPending">Pendente</b><span data-i18n="flowPendingD"></span></li>
+      <li><b data-i18n="flowValidate">Validação</b><span data-i18n="flowValidateD"></span></li>
+      <li class="s-ok"><b data-i18n="flowDash">Dashboard</b><span data-i18n="flowDashD"></span></li>
+    </ol>
+    <div id="status-counts" class="counts" hidden></div>
+
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-submissao" data-tab="submissao" data-i18n="tabSubmit">Submissão de dados</button>
+      <button role="tab" id="tab-validacao" data-tab="validacao" data-i18n="tabValidate">Validação de dados</button>
+    </div>
+
+    <article class="card full embed" id="pane-submissao">
+      <div class="card-head"><div><h3 data-i18n="submitHead"></h3><p class="muted small" data-i18n="submitDesc"></p></div>
+        <a class="btn" id="open-survey" target="_blank" rel="noopener" href="#" data-i18n="openNew">Abrir em nova janela</a></div>
+      <iframe id="frame-survey" title="Survey123" loading="lazy" allow="geolocation; camera" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <p class="muted small" data-i18n="embedHint"></p>
+    </article>
+
+    <article class="card full embed" id="pane-validacao" hidden>
+      <div class="card-head"><div><h3 data-i18n="validateHead"></h3><p class="muted small" data-i18n="validateDesc"></p></div>
+        <a class="btn" id="open-exp" target="_blank" rel="noopener" href="#" data-i18n="openNew">Abrir em nova janela</a></div>
+      <iframe id="frame-exp" title="ArcGIS Experience" loading="lazy" allow="geolocation" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <p class="muted small" data-i18n="embedHint"></p>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap foot-in">
+  <div class="devby"><span data-i18n="devBy">Desenvolvido por</span><img src="assets/logo-indico.png" alt="INDICO insights" height="40"></div>
+  <span data-i18n="footer"></span>
+</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/lri.js"></script>
+<script src="js/data.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/logos.js"></script>
+<script src="js/export.js"></script>
+<script src="data/documents.js"></script>
+<script src="js/docs.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

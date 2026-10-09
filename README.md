@@ -139,3 +139,7 @@ O Dashboard inclui um mapa que pinta cada distrito com a classe do LRI geral (s�
 - **Clicar** filtra o resto do painel: indicador (barras, radar, tabelas, linhas do mapa de calor), classe (gráfico circular), pilar (cartões dos pilares e gráfico de distribuição), distrito (mapa, lista, barras por distrito, colunas do mapa de calor) e ano (gráfico de evolução). Clicar outra vez remove o filtro.
 - A barra «Filtros activos» mostra o que está aplicado; cada filtro remove-se com um clique, ou todos com «Limpar filtros».
 - Os cartões do LRI geral/pilares e o mapa de distritos não são reduzidos pelos filtros de indicador/classe/pilar (são o resumo). As tabelas, gráficos, registos e as exportações (PDF/Excel/CSV) seguem os filtros activos.
+
+## Contribuição das instituições
+
+Gráfico de barras com o n.º de distritos com informação de LRI validada lançada por cada instituição (campo `instituicao`). A percentagem (no tooltip) é a parte da instituição no total de distritos lançados por todas as instituições. Respeita os filtros Ano e Província; está no PDF e numa folha «Instituições» do Excel.

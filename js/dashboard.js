@@ -196,6 +196,24 @@
       toggleFilter("year", String(ev[e.index].year));
     }), t("secEvolution")); empty("c-evo", !ev.length);
 
+    // 6b · contribuição das instituições (n.º de distritos)
+    const il = m.inst.list, ih = Math.max(220, il.length * 34 + 80); $("c-inst").closest(".chart").style.height = ih + "px";
+    mk("c-inst", {
+      type: "bar",
+      data: { labels: il.map((g) => short(g.name, 46)), datasets: [{ data: il.map((g) => g.n), backgroundColor: "#2f6f55", borderRadius: 4, borderSkipped: "start", barThickness: 20 }] },
+      options: {
+        interaction: { mode: "nearest", axis: "y", intersect: false },
+        indexAxis: "y", responsive: true, maintainAspectRatio: false,
+        scales: { x: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: t("instAxis") }, grid: { color: "#eceae0" } }, y: { grid: { display: false }, ticks: { autoSkip: false } } },
+        plugins: { legend: { display: false }, tooltip: { callbacks: {
+          title: (c) => il[c[0].dataIndex].name,
+          label: (c) => { const g = il[c.dataIndex]; return [`${t("instDistricts")}: ${g.n} (${I.fmt(g.pct, 1)}%)`, `${t("mapRecords")}: ${g.records}`]; },
+          afterBody: (c) => { const g = il[c[0].dataIndex]; return g.districts.length ? [g.districts.join(", ")] : []; }
+        } } }
+      }
+    }, t("secInst")); empty("c-inst", !il.length);
+    $("inst-note").textContent = il.length ? `${t("instNote")} ${m.inst.allDistricts} ${t("instDistrictsWord")}; ${il.length} ${t("instWord")}.` : "";
+
     // 7 · distribuição das pontuações dos sub-indicadores por pilar
     const subs = m.xSubs("pillar");
     mk("c-scores", clickable({
@@ -321,6 +339,22 @@
       q(last ? I.fmtDate(last) : "–", pt ? "última submissão" : "latest submission");
   }
 
+  // --------------------------------------- contribuição das instituições
+  // contribuição = n.º de distritos com informação de LRI lançada pela instituição / soma dos distritos de todas as instituições
+  function instStats() {
+    const F = S.filters, map = new Map();
+    S.valid.filter((r) => r.ind && (!F.year || String(r.year) === String(F.year)) && (!F.province || r.province === F.province)).forEach((r) => {
+      const k = (r.institution || "").trim() || t("instNone");
+      const g = map.get(k) || map.set(k, { name: k, districts: new Set(), records: 0 }).get(k);
+      if (r.district) g.districts.add(r.district); g.records++;
+    });
+    const list = [...map.values()].map((g) => ({ name: g.name, n: g.districts.size, districts: [...g.districts].sort(), records: g.records }));
+    const tot = list.reduce((a, g) => a + g.n, 0);
+    list.forEach((g) => (g.pct = tot ? (g.n / tot) * 100 : 0));
+    list.sort((a, b) => b.n - a.n || b.records - a.records || a.name.localeCompare(b.name));
+    return { list, total: tot, allDistricts: new Set(list.flatMap((g) => g.districts)).size };
+  }
+
   // ------------------------------------------------- filtros cruzados (clique)
   function applyCross(m) {
     const X = S.cross, mm = m.main; mm.allInds = mm.inds; mm.allSubs = mm.subs;
@@ -349,7 +383,7 @@
   // --------------------------------------------------------------------- tudo
   function render() {
     const m = L.build(S.valid, S.filters);
-    S.model = m; applyCross(m);
+    S.model = m; applyCross(m); m.inst = instStats();
     S.tableRecs = S.valid.filter((r) => (!S.filters.year || String(r.year) === String(S.filters.year)) && (!S.filters.province || r.province === S.filters.province) && (!S.filters.district || r.district === S.filters.district));
     if (S.cross.pillar || S.cross.cls || S.cross.ind) { const ok = new Set(m.main.inds.map((i) => i.ind.n)); S.tableRecs = S.tableRecs.filter((r) => r.ind && ok.has(r.ind.n)); }
     fillFilters(m); renderXbar(); renderKpis(m); renderInterp(m); renderCharts(m); renderTables(m); renderHeat(m); renderRecords(); renderQuality(m);

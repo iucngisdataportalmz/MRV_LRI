@@ -13,7 +13,7 @@
 
   function render() {
     if (!S.data) return;
-    const docs = (S.data.documents || []).slice().sort((a, b) => (b.year || 0) - (a.year || 0) || loc(a.title).localeCompare(loc(b.title)));
+    const docs = (S.data.documents || []).map((d, i) => ({ d, i })).sort((a, b) => (b.d.year || 0) - (a.d.year || 0) || a.i - b.i).map((x) => x.d); // ordem independente do idioma (ano, depois ordem do ficheiro)
     const cats = S.data.categories || {};
     const used = [...new Set(docs.map((d) => d.category || "outro"))];
     $("docs-cats").innerHTML = [`<button type="button" data-cat="" aria-pressed="${S.cat === ""}">${esc(t("fAll"))} (${docs.length})</button>`]

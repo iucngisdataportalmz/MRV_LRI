@@ -52,6 +52,7 @@
     add(t("sheetPillars"), [[t("pillar"), t("scoreCol"), t("classCol"), t("indicatorsN")]].concat(m.main.pillars.map((p) => [iname(p.pillar), p.score == null ? "" : +p.score.toFixed(3), p.cls ? t(p.cls) : "", p.nInd])), [20, 12, 14, 12]);
     add(t("sheetInd"), [[t("pillar"), "#", t("indicator"), t("meanValue"), t("unit"), t("scoreCol"), t("classCol"), "n"]].concat(m.main.inds.map((i) => [iname(C.PILLARS.find((p) => p.id === i.ind.p)), i.ind.n, iname(i.ind), i.mean == null ? "" : +i.mean.toFixed(3), i.unit, +i.score.toFixed(3), t(i.cls), i.n])), [14, 5, 60, 12, 10, 10, 12, 6]);
     add(t("sheetSub"), [[t("pillar"), t("indicator"), t("subIndicator"), t("meanValue"), t("unit"), t("scoreCol"), t("classCol"), "n"]].concat(m.main.subs.map((s) => [iname(C.PILLARS.find((p) => p.id === s.ind.p)), iname(s.ind), iname(s.sub), +s.mean.toFixed(3), s.sub.unit, s.score, t(s.cls), s.n])), [14, 50, 55, 12, 10, 10, 12, 6]);
+    add(t("sheetInst"), [[t("institution"), t("instDistricts"), "% ", t("mapRecords"), t("district")]].concat(m.inst.list.map((g) => [g.name, g.n, +g.pct.toFixed(1), g.records, g.districts.join(", ")])), [34, 12, 8, 12, 60]);
     const hd = D.heatData(m, "district");
     add(t("sheetHeat"), [[t("indicator") + " / " + t("subIndicator")].concat(hd.cols.map((c) => (c.total ? t("total") : c.label)))].concat(hd.rows.map((r) => [(r.type === "sub" ? "   " + iname(r.sub) : r.ind.n + ". " + iname(r.ind))].concat(r.cells.map((c) => (c ? +c.score.toFixed(3) : ""))))), [60]);
     const rr = recordRows();
@@ -219,6 +220,9 @@
       styles: { fontSize: 7, cellPadding: 1.2, lineColor: [225, 222, 211], lineWidth: 0.1 }
     }));
     y = doc.lastAutoTable.finalY + 4;
+
+    // contribuição das instituições (antes da metodologia)
+    putPair("c-inst", null, t("secInst"), "", 70);
 
     // metodologia
     h2(t("secMethod"));

@@ -43,7 +43,7 @@
       techTitle: "Área técnica", techIntro: "Recolha e validação de dados. Novos registos entram como Pendente; só passam ao Dashboard depois de validados.",
       flowSubmit: "Submissão", flowSubmitD: "Sem login: formulário Survey123", flowPending: "Pendente", flowPendingD: "Todo o novo registo",
       flowValidate: "Validação", flowValidateD: "Técnico com login ArcGIS", flowDash: "Dashboard", flowDashD: "Só dados Validados",
-      tabSubmit: "Submissão de dados", tabValidate: "Validação de dados",
+      tabSubmit: "Submissão de dados", tabTable: "Submissão usando tabela ↗", tabTableTip: "Abre numa nova janela (área restrita, pede palavra-passe)", tabValidate: "Validação de dados",
       submitHead: "Submissão de dados (Survey123)", submitDesc: "Formulário público: não é necessário login. O registo é guardado como Pendente.",
       validateHead: "Validação de dados (ArcGIS Experience)", validateDesc: "Acesso restrito: inicie sessão com utilizador e palavra-passe do ArcGIS Online. Validado → aparece no Dashboard · Rejeitado → fica fora do Dashboard.",
       openNew: "Abrir em nova janela", embedHint: "Se o formulário não carregar aqui (bloqueio de cookies de terceiros no navegador), use “Abrir em nova janela”.",
@@ -97,7 +97,7 @@
       prioNone: "No indicator below 2.5.", strongText: "Indicators scoring ≥ 2.5 (Good or Excellent class):", strongNone: "No indicators in the Good/Excellent classes yet.",
       secIndBar: "Score by indicator", secClassPie: "Distribution by class", secRadar: "Radar by indicator",
       xHint: "Tip: click charts, the map, cards and tables to filter the rest of the dashboard.", xActive: "Active filters:", xClear: "Clear filters", xRemove: "Remove filter", xClickHint: "Click to filter",
-      sheetInst: "Institutions", secInst: "Institution's contribution to the LRI", instSub: "Number of districts with validated LRI data submitted by each institution; the percentage is each institution's share of the districts submitted by all institutions.", instAxis: "No. of districts", instDistricts: "Districts", instNone: "No institution", instNote: "Total coverage:", instDistrictsWord: "districts", instWord: "institutions",
+      sheetInst: "Institutions", secInst: "Institutions' contribution to the LRI", instSub: "Number of districts with validated LRI data submitted by each institution; the percentage is each institution's share of the districts submitted by all institutions.", instAxis: "No. of districts", instDistricts: "Districts", instNone: "No institution", instNote: "Total coverage:", instDistrictsWord: "districts", instWord: "institutions",
       mapTitle: "LRI map by district", mapSub: "Each district is coloured by its overall LRI class (validated data only). Click a district for details.", mapList: "Districts with data", mapNoData: "No validated data", mapRecords: "Records", mapHint: "Click a district on the map or in the list.", mapUnmatched: "Districts not matched on the map:",
       secDistPillar: "Comparison by district and pillar", secEvolution: "LRI trend", secHeat: "Heatmap: indicator and sub-indicator × district",
       heatByDistrict: "By district (and total)", heatByYear: "By year", total: "Total",
@@ -117,7 +117,7 @@
       techTitle: "Technical area", techIntro: "Data collection and validation. New records enter as Pending and only reach the Dashboard once validated.",
       flowSubmit: "Submission", flowSubmitD: "No login: Survey123 form", flowPending: "Pending", flowPendingD: "Every new record",
       flowValidate: "Validation", flowValidateD: "Technician with ArcGIS login", flowDash: "Dashboard", flowDashD: "Validated data only",
-      tabSubmit: "Data submission", tabValidate: "Data validation",
+      tabSubmit: "Data submission", tabTable: "Submission using a table ↗", tabTableTip: "Opens in a new window (restricted area, password required)", tabValidate: "Data validation",
       submitHead: "Data submission (Survey123)", submitDesc: "Public form: no login required. The record is saved as Pending.",
       validateHead: "Data validation (ArcGIS Experience)", validateDesc: "Restricted access: sign in with an ArcGIS Online username and password. Validated → appears on the Dashboard · Rejected → stays off the Dashboard.",
       openNew: "Open in new window", embedHint: "If the form does not load here (third-party cookies blocked by your browser), use “Open in new window”.",
@@ -166,6 +166,7 @@
     document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.getAttribute("data-i18n")); });
     document.querySelectorAll("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.getAttribute("data-i18n-html")); });
     document.querySelectorAll("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.getAttribute("data-i18n-ph")); });
+    document.querySelectorAll("[data-i18n-title]").forEach((el) => { el.title = t(el.getAttribute("data-i18n-title")); });
     document.querySelectorAll("[data-lang]").forEach((b) => b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang));
     document.title = t("appName") + " · MRV";
   }

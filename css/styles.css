@@ -219,3 +219,6 @@ label.inline{display:flex}
 tr.xr{cursor:pointer}tr.xr:hover td{background:#f1f6f2}tr.xr.on td{background:#e1f0e6;font-weight:600}
 .heat th.xr,.heat th.xc,.heat td.xc{cursor:pointer}.heat th.on{outline:2px solid #1d2a24}.heat th.xr.on{background:#e1f0e6}
 .heat td.xc:hover{outline:2px solid #1d2a24;outline-offset:-2px}
+
+.tabs .tablink{display:inline-flex;align-items:center;font-weight:700;color:var(--ink2);padding:10px 16px;border-radius:10px 10px 0 0;text-decoration:none}
+.tabs .tablink:hover{background:#eef3ef;color:var(--brand)}

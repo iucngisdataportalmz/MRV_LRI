@@ -11,6 +11,7 @@ window.LRI_CONFIG = {
   experienceUrl: "https://experience.arcgis.com/experience/2028fe91c0fe43bf849add5aa56da724",
 
   // 3. Survey123 (Submissão de dados — sem login)
+  tableUrl: "https://fndsmoz.maps.arcgis.com/home/item.html?id=587a6421a972400aa48c88993611042c#overview", // submissão usando tabela (área restrita)
   surveyUrl: "https://survey123.arcgis.com/share/e582f1eafa404ce8b70e5dbc8ec20e56",
 
   // Nomes dos campos da camada (a leitura é insensível a maiúsculas/minúsculas)

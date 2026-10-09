@@ -184,9 +184,9 @@ label.inline{display:flex}
 
 /* mapa de distritos */
 .mapbox{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:20px;align-items:start}
-.map-wrap{position:relative;display:flex;justify-content:center;background:#f7f6f1;border-radius:10px;padding:8px;max-height:760px}
+.map-wrap{position:relative;display:flex;justify-content:center;background:#f7f6f1;border-radius:10px;padding:8px;min-width:0}
 .map-svg{width:100%;display:flex;justify-content:center}
-.map-svg svg{width:auto;max-width:100%;height:auto;max-height:740px;display:block}
+.map-svg svg{max-width:100%;display:block;flex:none}
 .md{vector-effect:non-scaling-stroke;stroke:#fff;stroke-width:.7px;cursor:pointer;transition:opacity .15s}
 .md:not(.has){cursor:default}
 .md.dim{opacity:.35}.md:hover{stroke:#1d2a24;stroke-width:1.5px}
@@ -206,7 +206,7 @@ label.inline{display:flex}
 .map-list{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:10px;position:relative}
 .ml-i{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:7px 10px;text-align:left;font:inherit;font-size:13.5px;cursor:pointer}
 .ml-i span{flex:1}.ml-i:hover,.ml-i.on{background:#eef3ef}.ml-i.on{font-weight:700}
-@media (max-width:860px){.mapbox{grid-template-columns:1fr}.map-wrap{max-height:560px}.map-svg svg{max-height:540px}}
+@media (max-width:860px){.mapbox{grid-template-columns:1fr}.map-wrap{max-height:none}}
 .map-top{margin-top:0}
 
 /* filtros cruzados */
@@ -222,3 +222,9 @@ tr.xr{cursor:pointer}tr.xr:hover td{background:#f1f6f2}tr.xr.on td{background:#e
 
 .tabs .tablink{display:inline-flex;align-items:center;font-weight:700;color:var(--ink2);padding:10px 16px;border-radius:10px 10px 0 0;text-decoration:none}
 .tabs .tablink:hover{background:#eef3ef;color:var(--brand)}
+
+/* telemóvel: evita que selects com texto longo alarguem a página */
+label.inline{max-width:100%;min-width:0}
+#f-sub{width:100%;max-width:100%;min-width:0;text-overflow:ellipsis}
+.card-head>*{min-width:0;max-width:100%}
+html,body{overflow-x:hidden}

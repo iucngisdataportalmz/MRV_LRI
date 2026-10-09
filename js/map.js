@@ -119,6 +119,17 @@
     const p = document.querySelector("#map-svg .md.sel"); if (p && p.parentNode) p.parentNode.appendChild(p);
   }
 
+  // dimensiona o SVG com largura/altura explícitas (alguns telemóveis não calculam bem height:auto em SVG)
+  function fit() {
+    const host = $("map-svg"), svg = host && host.firstElementChild; if (!svg || !M.vb) return;
+    const avail = host.clientWidth || (host.parentElement && host.parentElement.clientWidth) || window.innerWidth - 60;
+    const aspect = M.vb[2] / M.vb[3], maxH = window.innerWidth <= 860 ? 520 : 740;
+    let h = Math.min(maxH, avail / aspect), w = h * aspect;
+    if (w > avail) { w = avail; h = w / aspect; }
+    svg.setAttribute("width", Math.round(w)); svg.setAttribute("height", Math.round(h));
+    svg.style.width = Math.round(w) + "px"; svg.style.height = Math.round(h) + "px";
+  }
+
   function render() {
     const host = $("map-svg"); if (!host || !FEATS.length || !D.S.valid) return;
     compute();
@@ -127,7 +138,7 @@
     else if (M.sel && M.byFeat.get(M.sel)) M.sel = null;
     const s = svgMarkup(M.sel);
     host.innerHTML = `<svg viewBox="${s.vb.map((v) => v.toFixed(3)).join(" ")}" xmlns="${NS}" role="img" aria-label="${esc(t("mapTitle"))}" preserveAspectRatio="xMidYMid meet">${s.markup}</svg>`;
-    host.firstChild.style.aspectRatio = s.vb[2] + " / " + s.vb[3];
+    fit();
     $("map-legend").innerHTML = legendHtml();
     $("map-list").innerHTML = listHtml();
     $("map-card").innerHTML = cardHtml(M.sel);
@@ -180,4 +191,7 @@
   window.LRI_MAP = { render, image, items: () => M.items };
   bind();
   window.addEventListener("lri-render", render);
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
+  window.addEventListener("orientationchange", () => setTimeout(fit, 200));
+  if (window.ResizeObserver && $("map-svg")) new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(fit, 60); }).observe($("map-svg"));
 })();

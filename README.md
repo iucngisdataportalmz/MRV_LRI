@@ -143,3 +143,23 @@ O Dashboard inclui um mapa que pinta cada distrito com a classe do LRI geral (s�
 ## Contribuição das instituições
 
 Gráfico de barras com o n.º de distritos com informação de LRI validada lançada por cada instituição (campo `instituicao`). A percentagem (no tooltip) é a parte da instituição no total de distritos lançados por todas as instituições. Respeita os filtros Ano e Província; está no PDF e numa folha «Instituições» do Excel.
+
+## Baseline (2024)
+
+`data/baseline.js` contém os valores de baseline (ficheiro `base_line_data.xlsx`, 38 valores) ligados aos sub-indicadores do catálogo pelo **id** (1a, 2a, … 17b). O baseline é da paisagem Bárue + Vanduzi (só 13a/13b têm valor por distrito).
+
+- O LRI de baseline calcula-se com as mesmas regras e hierarquia que o LRI atual.
+- A comparação («Atual» e Δ) é feita só sobre os distritos com baseline; distritos sem baseline mostram «Este distrito não tem baseline».
+- Aparece: nos cartões do LRI/pilares, no cartão «Mudança face ao baseline», nas barras e no radar por indicador (quando a seleção só tem distritos com baseline), na linha de evolução, nas tabelas de indicadores/sub-indicadores, no PDF e numa folha «Baseline 2024» do Excel.
+- Para atualizar: `python3 tools/baseline_to_js.py novo_baseline.xlsx` (precisa de `pip install openpyxl`). Se acrescentar baseline de outros distritos, edite `districts` em `data/baseline.js`.
+
+### Acrescentar o baseline de outros distritos
+
+`data/baseline.js` guarda **grupos** de distritos (`groups`). Para acrescentar um novo (ou atualizar um existente):
+
+```
+python3 tools/baseline_to_js.py baseline_novo.xlsx --districts "Chimoio"
+python3 tools/baseline_to_js.py baseline_novo.xlsx --districts "Gondola,Manica"   # um baseline partilhado por 2 distritos
+```
+
+O Excel tem de seguir o mesmo modelo da folha original (mesma ordem de indicadores; o script pára com erro se não coincidir). Um grupo com os mesmos distritos é substituído, os outros mantêm-se. Os nomes têm de ser iguais aos da camada do ArcGIS. Depois basta publicar o ficheiro `data/baseline.js` no GitHub.

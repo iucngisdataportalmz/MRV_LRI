@@ -73,6 +73,19 @@
     return { subs, inds, pillars, lri, cls: classOf(lri), n: recs.length };
   }
 
+  // --- baseline (dados de referência, ex.: 2024) ---------------------------
+  // valores da paisagem (Bárue + Vanduzi); alguns sub-indicadores têm valor por distrito.
+  function baselineRecs(district) {
+    const B = window.LRI_BASELINE; if (!B) return [];
+    // cada grupo = um baseline (ex.: «Bárue + Vanduzi»); com distrito escolhido usa só o grupo desse distrito
+    return B.groups.filter((g) => !district || g.districts.includes(district)).flatMap((g) => g.items
+      .filter((it) => !it.district || !district || it.district === district)
+      .map((it) => {
+        const ind = C.IND.find((i) => i.n === it.ind), sub = ind && ind.subs.find((s) => s.id === it.sub);
+        return ind && sub ? { ind, sub, value: it.value, district: it.district || "" } : null;
+      })).filter(Boolean);
+  }
+
   // --- modelo completo do dashboard ----------------------------------------
   function build(allValid, filters) {
     filters = filters || {};
@@ -129,13 +142,24 @@
     const covDistricts = [...new Set(recs.map((r) => r.district).filter(Boolean))];
     const priorities = main.inds.filter((i) => i.score != null).slice().sort((a, b) => a.score - b.score).filter((i) => i.score < 2.5).slice(0, 5);
 
+    // comparação com o baseline: só sobre os distritos com baseline (comparação "like-for-like")
+    let bl = null;
+    const B = window.LRI_BASELINE;
+    if (B) {
+      const bd = [...new Set(B.groups.flatMap((g) => g.districts))], outside = filters.district && !bd.includes(filters.district);
+      const cmpRecs = outside ? [] : recs0(valid, filters.year).filter((r) => bd.includes(r.district) && (!filters.district || r.district === filters.district));
+      const model = calc(baselineRecs(outside ? "__none" : filters.district));
+      const cmp = calc(cmpRecs);
+      const applies = !outside && recs.length > 0 && recs.every((r) => bd.includes(r.district));
+      bl = { year: B.year, districts: bd, model, cmp, applies, outside: !!outside, hasCmp: cmp.lri != null && model.lri != null && !outside };
+    }
     return {
-      recs, main, years, districts, provinces, evolution, byDistrict, colsD, colsY,
+      baseline: bl, recs, main, years, districts, provinces, evolution, byDistrict, colsD, colsY,
       interp: { poor, strong, weakest, gap, nextClass, delta, prevYear, curYear, provinces: covProvinces, covDistricts, priorities,
         indicatorsCovered: main.inds.length, indicatorsTotal: C.IND.length }
     };
   }
   const recs0 = (valid, year) => valid.filter((r) => r.ind && (!year || String(r.year) === String(year)));
 
-  window.LRI = { classOf, classColor, mean, statusKey, enrich, calc, build };
+  window.LRI = { baselineRecs, classOf, classColor, mean, statusKey, enrich, calc, build };
 })();

@@ -228,3 +228,9 @@ label.inline{max-width:100%;min-width:0}
 #f-sub{width:100%;max-width:100%;min-width:0;text-overflow:ellipsis}
 .card-head>*{min-width:0;max-width:100%}
 html,body{overflow-x:hidden}
+
+/* baseline */
+.kpi .bl{font-size:12.5px;margin-top:6px;color:var(--ink2)}.kpi.main .bl{color:#cfe7d8}
+.bl .up,.dl.up{color:#1f8a4c;font-weight:700}.bl .dn,.dl.dn{color:#c23b2e;font-weight:700}.bl .eq,.dl.eq{color:var(--ink2)}
+.kpi.main .bl .up{color:#9be0b0}.kpi.main .bl .dn{color:#ffb4a8}.kpi.main .bl .eq{color:#fff}
+table.blt{width:100%}table.blt td.num,table.blt th.num{text-align:right}

@@ -11,6 +11,10 @@
   const sname = (sub) => I.pick(sub);
   const short = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
   const f2 = (n) => I.fmt(n, 2);
+  // baseline: variação e formatação
+  const dCls = (d) => (d > 0.0049 ? "up" : d < -0.0049 ? "dn" : "eq");
+  const dTxt = (d) => (d == null ? "–" : `${d > 0.0049 ? "▲ +" : d < -0.0049 ? "▼ " : "= "}${f2(d)}`);
+  const blScope = () => (S.model && S.model.baseline ? t("blScope") : "");
   const textOn = (k) => (k === "moderate" || k === "good" ? "#1d2a24" : "#fff");
 
   const S = { valid: [], filters: { year: "", province: "", district: "" }, cross: { pillar: null, cls: null, ind: null }, heat: "district", sub: "", page: 0, q: "", charts: {}, model: null, tableRecs: [] };
@@ -78,17 +82,20 @@
   // ------------------------------------------------------------------- KPIs
   function renderKpis(m) {
     const mm = m.main, el = $("kpis");
-    const card = (title, score, cls, sub, color, extra, pid) => {
+    const card = (title, score, cls, sub, color, extra, pid, bl) => {
       const pct = score == null ? 0 : Math.max(0, Math.min(100, ((score - 1) / 3) * 100));
       return `<div class="kpi ${extra || ""}${pid && S.cross.pillar === pid ? " xsel" : ""}${pid && S.cross.pillar && S.cross.pillar !== pid ? " xdim" : ""}"${pid ? ` data-pillar="${pid}" tabindex="0" role="button" title="${esc(t("xClickHint"))}"` : ""} style="--c:${cls ? ccolor(cls) : "#bbb"};--pc:${color || "#fff"}">
         <h4>${color ? '<i class="dot"></i>' : ""}${esc(title)}</h4>
         <div class="big">${score == null ? "–" : f2(score)}</div>
         ${cls ? `<span class="badge ${cls}">${esc(cname(cls))}</span>` : `<span class="sub">${esc(t("noData"))}</span>`}
         <div class="meter" aria-hidden="true"><i style="width:${pct}%"></i></div>
-        <div class="sub">${esc(sub)}</div></div>`;
+        <div class="sub">${esc(sub)}</div>${bl || ""}</div>`;
     };
-    el.innerHTML = card(t("lriOverall"), mm.lri, mm.cls, `${(mm.allInds || mm.inds).length}/${C.IND.length} ${t("indicatorsN")} · ${mm.n} ${t("rows")}`, null, "main") +
-      mm.pillars.map((p) => card(I.pick(p.pillar), p.score, p.cls, `${p.nInd} ${t("indicatorsN")}`, p.pillar.color, "", p.pillar.id)).join("");
+    const B = m.baseline;
+    const blLine = (cur, b) => { if (!B || !B.hasCmp || b == null || cur == null) return ""; const d = cur - b; return `<div class="bl" title="${esc(B.applies ? "" : t("blScope"))}">Baseline ${B.year}: <b>${f2(b)}</b> · <span class="${dCls(d)}">${dTxt(d)}${B.applies ? "" : " *"}</span></div>`; };
+    const mainBl = !B ? "" : B.outside ? `<div class="bl">${esc(t("noBase"))}</div>` : blLine(B.cmp.lri, B.model.lri);
+    el.innerHTML = card(t("lriOverall"), mm.lri, mm.cls, `${(mm.allInds || mm.inds).length}/${C.IND.length} ${t("indicatorsN")} · ${mm.n} ${t("rows")}`, null, "main", "", mainBl) +
+      mm.pillars.map((p, pi) => card(I.pick(p.pillar), p.score, p.cls, `${p.nInd} ${t("indicatorsN")}`, p.pillar.color, "", p.pillar.id, B && B.hasCmp ? blLine(B.cmp.pillars[pi].score, B.model.pillars[pi].score) : "")).join("");
     el.querySelectorAll("[data-pillar]").forEach((k) => { const f = () => toggleCross("pillar", k.dataset.pillar); k.onclick = f; k.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); f(); } }; });
   }
 
@@ -113,7 +120,17 @@
     const strong = `<p>${esc(x.strong.length ? t("strongText") : t("strongNone"))}</p>${x.strong.length ? `<ul>${x.strong.map(li).join("")}</ul>` : ""}`;
 
     el.innerHTML = card("", t("iDelta"), delta) + card("", t("iPoor"), poor, ccolor("poor")) + card("", t("iGap"), gap) + card("", t("iWeak"), weak, x.weakest ? x.weakest.pillar.color : null) +
-      card("", t("iCover"), cover) + card("s3", t("iPrio"), prio, ccolor("poor")) + card("s4", t("iStrong"), strong, ccolor("excellent"));
+      card("", t("iCover"), cover) + card("s3", t("iPrio"), prio, ccolor("poor")) + card("s4", t("iStrong"), strong, ccolor("excellent")) + baseCard(m);
+  }
+
+  function baseCard(m) {
+    const B = m.baseline; if (!B) return "";
+    const head = `${esc(t("iBase"))} (${B.year})`;
+    if (B.outside) return `<div class="icard s4" style="--c:#9a9484"><h4>${head}</h4><p>${esc(t("noBase"))}</p></div>`;
+    if (!B.hasCmp) return `<div class="icard s4" style="--c:#9a9484"><h4>${head}</h4><p>${esc(t("noBaseCmp"))}</p></div>`;
+    const row = (name, b, c, color) => { const d = c == null || b == null ? null : c - b; return `<tr><td>${color ? `<span class="pdot" style="--pc:${color}"></span>` : ""}${esc(name)}</td><td class="num">${b == null ? "–" : f2(b)} ${b == null ? "" : `<span class="cls ${L.classOf(b)}" style="--c:${ccolor(L.classOf(b))}">${esc(cname(L.classOf(b)))}</span>`}</td><td class="num">${c == null ? "–" : f2(c)} ${c == null ? "" : `<span class="cls ${L.classOf(c)}" style="--c:${ccolor(L.classOf(c))}">${esc(cname(L.classOf(c)))}</span>`}</td><td class="num dl ${d == null ? "" : dCls(d)}">${dTxt(d)}</td></tr>`; };
+    const rows = row(t("lriOverall"), B.model.lri, B.cmp.lri) + B.model.pillars.map((p, i) => row(I.pick(p.pillar), p.score, B.cmp.pillars[i].score, p.pillar.color)).join("");
+    return `<div class="icard s4" style="--c:#9a9484"><h4>${head}</h4><div class="table-wrap"><table class="data blt"><thead><tr><th></th><th class="num">Baseline ${B.year}</th><th class="num">${esc(t("blCurrent"))}</th><th class="num">Δ</th></tr></thead><tbody>${rows}</tbody></table></div><p class="muted small">${esc(t("blScope"))}</p></div>`;
   }
 
   // ----------------------------------------------------------------- gráficos
@@ -123,18 +140,20 @@
     const inds = m.xInds("ind"), has = inds.length > 0, X = S.cross, FD = S.filters;
 
     // 1 · barras horizontais por indicador
-    const h = Math.max(380, inds.length * 28 + 70); $("c-ind").closest(".chart").style.height = h + "px";
+    const BL = m.baseline && m.baseline.applies ? m.baseline : null;
+    const bInd = (i) => (BL ? BL.model.inds.find((x) => x.ind.n === i.ind.n) : null);
+    const h = Math.max(380, inds.length * (BL ? 40 : 28) + 70); $("c-ind").closest(".chart").style.height = h + "px";
     mk("c-ind", clickable({
       type: "bar",
-      data: { labels: inds.map((i) => short(`${i.ind.n}. ${iname(i.ind)}`, 44)), datasets: [{ data: inds.map((i) => +i.score.toFixed(2)), backgroundColor: inds.map((i) => dimc(ccolor(i.cls), X.ind && X.ind !== i.ind.n)), borderRadius: 4, borderSkipped: "start", barThickness: 16 }] },
+      data: { labels: inds.map((i) => short(`${i.ind.n}. ${iname(i.ind)}`, 44)), datasets: [{ data: inds.map((i) => +i.score.toFixed(2)), backgroundColor: inds.map((i) => dimc(ccolor(i.cls), X.ind && X.ind !== i.ind.n)), borderRadius: 4, borderSkipped: "start", barThickness: BL ? 10 : 16, label: t("blCurrent") }].concat(BL ? [{ label: "Baseline " + BL.year, data: inds.map((i) => { const b = bInd(i); return b ? +b.score.toFixed(2) : null; }), backgroundColor: "#c9c5b6", borderRadius: 4, borderSkipped: "start", barThickness: 10 }] : []) },
       options: {
         interaction: { mode: "nearest", axis: "y", intersect: false },
         indexAxis: "y", responsive: true, maintainAspectRatio: false,
         scales: { x: Object.assign(scoreScale(), { title: { display: true, text: t("yAxisScore") } }), y: { grid: { display: false }, ticks: { autoSkip: false, font: { size: 11 } } } },
-        plugins: { legend: { display: false }, guides: { axis: "x" }, tooltip: { callbacks: { title: (c) => { const i = inds[c[0].dataIndex]; return `${i.ind.n}. ${iname(i.ind)}`; }, label: (c) => `${f2(c.parsed.x)} · ${cname(inds[c.dataIndex].cls)}` } } }
+        plugins: { legend: { display: false }, guides: { axis: "x" }, tooltip: { callbacks: { title: (c) => { const i = inds[c[0].dataIndex]; return `${i.ind.n}. ${iname(i.ind)}`; }, label: (c) => c.datasetIndex === 1 ? `Baseline ${BL.year}: ${f2(c.parsed.x)} · ${cname(L.classOf(c.parsed.x))}` : `${f2(c.parsed.x)} · ${cname(inds[c.dataIndex].cls)}` } } }
       }
     }, (els) => toggleCross("ind", inds[els[0].index].ind.n)), t("secIndBar")); empty("c-ind", !has);
-    $("lg-class").innerHTML = CFG.classes.map((c) => `<span style="--c:${c.color}"><i></i>${esc(cname(c.key))}</span>`).join("");
+    $("lg-class").innerHTML = CFG.classes.map((c) => `<span style="--c:${c.color}"><i></i>${esc(cname(c.key))}</span>`).join("") + (BL ? `<span style="--c:#c9c5b6"><i></i>Baseline ${BL.year}</span>` : "");
 
     // 2 · circular por classe
     const pieInds = m.xInds("cls");
@@ -151,12 +170,12 @@
     // 3 · radar por indicador
     mk("c-radar", clickable({
       type: "radar",
-      data: { labels: inds.map((i) => short(`${i.ind.n}. ${iname(i.ind)}`, 26)), datasets: [{ label: t("scoreCol"), data: inds.map((i) => +i.score.toFixed(2)), borderColor: "#1f4d3a", backgroundColor: "rgba(47,111,85,.22)", pointBackgroundColor: inds.map((i) => ccolor(i.cls)), pointBorderColor: "#fff", pointRadius: inds.map((i) => (X.ind === i.ind.n ? 9 : 5)), pointHitRadius: 14, borderWidth: 2 }] },
+      data: { labels: inds.map((i) => short(`${i.ind.n}. ${iname(i.ind)}`, 26)), datasets: [{ label: t("scoreCol"), data: inds.map((i) => +i.score.toFixed(2)), borderColor: "#1f4d3a", backgroundColor: "rgba(47,111,85,.22)", pointBackgroundColor: inds.map((i) => ccolor(i.cls)), pointBorderColor: "#fff", pointRadius: inds.map((i) => (X.ind === i.ind.n ? 9 : 5)), pointHitRadius: 14, borderWidth: 2 }].concat(BL ? [{ label: "Baseline " + BL.year, data: inds.map((i) => { const b = bInd(i); return b ? +b.score.toFixed(2) : null; }), borderColor: "#9a9484", backgroundColor: "rgba(154,148,132,.12)", borderDash: [5, 4], pointRadius: 3, pointBackgroundColor: "#9a9484", borderWidth: 2 }] : []) },
       options: {
         interaction: { mode: "nearest", intersect: false },
         responsive: true, maintainAspectRatio: false,
         scales: { r: { min: 0, max: 4, ticks: { stepSize: 1, backdropColor: "transparent" }, pointLabels: { font: { size: 10 } }, angleLines: { color: "#e6e3d8" } } },
-        plugins: { legend: { display: false }, tooltip: { callbacks: { title: (c) => { const i = inds[c[0].dataIndex]; return `${i.ind.n}. ${iname(i.ind)}`; }, label: (c) => `${f2(c.parsed.r)} · ${cname(inds[c.dataIndex].cls)}` } } }
+        plugins: { legend: { display: false }, tooltip: { callbacks: { title: (c) => { const i = inds[c[0].dataIndex]; return `${i.ind.n}. ${iname(i.ind)}`; }, label: (c) => c.datasetIndex === 1 ? `Baseline ${BL.year}: ${f2(c.parsed.r)} · ${cname(L.classOf(c.parsed.r))}` : `${f2(c.parsed.r)} · ${cname(inds[c.dataIndex].cls)}` } } }
       }
     }, (els) => toggleCross("ind", inds[els[0].index].ind.n)), t("secRadar")); empty("c-radar", !has);
 
@@ -185,6 +204,7 @@
         labels: ev.map((e) => String(e.year)),
         datasets: [{ label: t("lriOverall"), data: ev.map((e) => e.lri), borderColor: "#1d2a24", backgroundColor: "#1d2a24", borderWidth: 3.5, pointRadius: ev.map((e) => (String(FD.year) === String(e.year) ? 11 : 6)), tension: 0.2 }]
           .concat(C.PILLARS.map((p, pi) => ({ label: I.pick(p), data: ev.map((e) => e.pillars[pi]), borderColor: p.color, backgroundColor: p.color, borderWidth: 2, pointRadius: 4, tension: 0.2, spanGaps: true })))
+          .concat(BL && BL.model.lri != null ? [{ label: `${t("lriOverall")} · Baseline ${BL.year}`, data: ev.map(() => BL.model.lri), borderColor: "#9a9484", backgroundColor: "#9a9484", borderDash: [8, 5], borderWidth: 2, pointRadius: 0, tension: 0 }] : [])
       },
       options: {
         responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
@@ -266,13 +286,17 @@
   const unitStr = (u) => (u ? " " + u : "");
 
   function renderTables(m) {
+    const BL = m.baseline && m.baseline.applies ? m.baseline : null;
+    const blTh = BL ? `<th class="num">Baseline ${BL.year}</th><th class="num">Δ</th>` : "";
+    const blTd = (b, cur) => { if (!BL) return ""; if (b == null) return `<td class="num muted">–</td><td class="num muted">–</td>`; const d = cur - b; return `<td class="num">${f2(b)}</td><td class="num dl ${dCls(d)}">${dTxt(d)}</td>`; };
+    const extra = BL ? 2 : 0;
     const subs = m.main.subs.slice().sort((a, b) => a.ind.n - b.ind.n || a.sub.id.localeCompare(b.sub.id, undefined, { numeric: true }));
-    $("t-sub").innerHTML = `<thead><tr><th>${t("pillar")}</th><th class="wrap">${t("indicator")}</th><th class="wrap">${t("subIndicator")}</th><th class="num">${t("meanValue")}</th><th class="num">${t("scoreCol")}</th><th>${t("classCol")}</th></tr></thead><tbody>` +
-      (subs.map((s) => `<tr class="xr${S.cross.ind === s.ind.n ? " on" : ""}" data-ind="${s.ind.n}"><td>${pillCell(s.ind.p)}</td><td class="wrap">${s.ind.n}. ${esc(iname(s.ind))}</td><td class="wrap">${esc(sname(s.sub))}</td><td class="num">${f2(s.mean)}${esc(unitStr(s.sub.unit))}</td><td class="num">${s.score}</td><td>${clsCell(s.cls)}</td></tr>`).join("") ||
-        `<tr><td colspan="6" class="muted">${t("noData")}</td></tr>`) + "</tbody>";
-    $("t-ind").innerHTML = `<thead><tr><th>${t("pillar")}</th><th class="wrap">${t("indicator")}</th><th class="num">${t("meanValue")}</th><th class="num">${t("scoreCol")}</th><th>${t("classCol")}</th></tr></thead><tbody>` +
-      (m.main.inds.map((i) => `<tr class="xr${S.cross.ind === i.ind.n ? " on" : ""}" data-ind="${i.ind.n}"><td>${pillCell(i.ind.p)}</td><td class="wrap">${i.ind.n}. ${esc(iname(i.ind))}</td><td class="num">${i.mean == null ? esc(t("mixedUnits")) : f2(i.mean) + esc(unitStr(i.unit))}</td><td class="num">${f2(i.score)}</td><td>${clsCell(i.cls)}</td></tr>`).join("") ||
-        `<tr><td colspan="5" class="muted">${t("noData")}</td></tr>`) + "</tbody>";
+    $("t-sub").innerHTML = `<thead><tr><th>${t("pillar")}</th><th class="wrap">${t("indicator")}</th><th class="wrap">${t("subIndicator")}</th><th class="num">${t("meanValue")}</th><th class="num">${t("scoreCol")}</th><th>${t("classCol")}</th>${blTh}</tr></thead><tbody>` +
+      (subs.map((s) => `<tr class="xr${S.cross.ind === s.ind.n ? " on" : ""}" data-ind="${s.ind.n}"><td>${pillCell(s.ind.p)}</td><td class="wrap">${s.ind.n}. ${esc(iname(s.ind))}</td><td class="wrap">${esc(sname(s.sub))}</td><td class="num">${f2(s.mean)}${esc(unitStr(s.sub.unit))}</td><td class="num">${s.score}</td><td>${clsCell(s.cls)}</td>${(() => { const b = BL && BL.model.subs.find((x) => x.key === s.key); return blTd(b ? b.score : null, s.score); })()}</tr>`).join("") ||
+        `<tr><td colspan="${6 + extra}" class="muted">${t("noData")}</td></tr>`) + "</tbody>";
+    $("t-ind").innerHTML = `<thead><tr><th>${t("pillar")}</th><th class="wrap">${t("indicator")}</th><th class="num">${t("meanValue")}</th><th class="num">${t("scoreCol")}</th><th>${t("classCol")}</th>${blTh}</tr></thead><tbody>` +
+      (m.main.inds.map((i) => `<tr class="xr${S.cross.ind === i.ind.n ? " on" : ""}" data-ind="${i.ind.n}"><td>${pillCell(i.ind.p)}</td><td class="wrap">${i.ind.n}. ${esc(iname(i.ind))}</td><td class="num">${i.mean == null ? esc(t("mixedUnits")) : f2(i.mean) + esc(unitStr(i.unit))}</td><td class="num">${f2(i.score)}</td><td>${clsCell(i.cls)}</td>${(() => { const b = BL && BL.model.inds.find((x) => x.ind.n === i.ind.n); return blTd(b ? b.score : null, i.score); })()}</tr>`).join("") ||
+        `<tr><td colspan="${5 + extra}" class="muted">${t("noData")}</td></tr>`) + "</tbody>";
   }
 
   // ------------------------------------------------------------- mapa de calor

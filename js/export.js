@@ -53,6 +53,14 @@
     add(t("sheetInd"), [[t("pillar"), "#", t("indicator"), t("meanValue"), t("unit"), t("scoreCol"), t("classCol"), "n"]].concat(m.main.inds.map((i) => [iname(C.PILLARS.find((p) => p.id === i.ind.p)), i.ind.n, iname(i.ind), i.mean == null ? "" : +i.mean.toFixed(3), i.unit, +i.score.toFixed(3), t(i.cls), i.n])), [14, 5, 60, 12, 10, 10, 12, 6]);
     add(t("sheetSub"), [[t("pillar"), t("indicator"), t("subIndicator"), t("meanValue"), t("unit"), t("scoreCol"), t("classCol"), "n"]].concat(m.main.subs.map((s) => [iname(C.PILLARS.find((p) => p.id === s.ind.p)), iname(s.ind), iname(s.sub), +s.mean.toFixed(3), s.sub.unit, s.score, t(s.cls), s.n])), [14, 50, 55, 12, 10, 10, 12, 6]);
     add(t("sheetInst"), [[t("institution"), t("instDistricts"), "% ", t("mapRecords"), t("district")]].concat(m.inst.list.map((g) => [g.name, g.n, +g.pct.toFixed(1), g.records, g.districts.join(", ")])), [34, 12, 8, 12, 60]);
+    const B = m.baseline;
+    if (B && B.hasCmp) {
+      const sg = (v) => (v == null ? "" : +v.toFixed(2));
+      const rows = [[t("lriOverall"), "", "", "", sg(B.model.lri), sg(B.cmp.lri), B.cmp.lri == null ? "" : sg(B.cmp.lri - B.model.lri)]]
+        .concat(B.model.pillars.map((p, i) => [iname(p.pillar), "", "", "", sg(p.score), sg(B.cmp.pillars[i].score), B.cmp.pillars[i].score == null || p.score == null ? "" : sg(B.cmp.pillars[i].score - p.score)]))
+        .concat(B.model.subs.slice().sort((a, b) => a.ind.n - b.ind.n || a.sub.id.localeCompare(b.sub.id, undefined, { numeric: true })).map((s) => { const c = B.cmp.subs.find((x) => x.key === s.key); return [iname(C.PILLARS.find((p) => p.id === s.ind.p)), `${s.ind.n}. ${iname(s.ind)}`, iname(s.sub), sg(s.mean), s.score, c ? c.score : "", c ? c.score - s.score : ""]; }));
+      add("Baseline " + B.year, [[t("pillar"), t("indicator"), t("subIndicator"), "Baseline (" + t("meanValue") + ")", "Baseline (" + t("scoreCol") + ")", t("blCurrent") + " (" + t("scoreCol") + ")", "Δ"], [t("blScope")]].concat(rows), [20, 40, 50, 18, 18, 18, 8]);
+    }
     const hd = D.heatData(m, "district");
     add(t("sheetHeat"), [[t("indicator") + " / " + t("subIndicator")].concat(hd.cols.map((c) => (c.total ? t("total") : c.label)))].concat(hd.rows.map((r) => [(r.type === "sub" ? "   " + iname(r.sub) : r.ind.n + ". " + iname(r.ind))].concat(r.cells.map((c) => (c ? +c.score.toFixed(3) : ""))))), [60]);
     const rr = recordRows();
@@ -132,7 +140,9 @@
       [t("iCover"), `${x.covDistricts.length}/${CFG.targetDistricts.length} ${t("districtsCovered")}${x.covDistricts.length ? " (" + x.covDistricts.join(", ") + ")" : ""}; ${x.provinces.length} ${t("provincesWord")}; ${x.indicatorsCovered}/${x.indicatorsTotal} ${t("indCovered")}`],
       [t("iPrio"), x.priorities.length ? x.priorities.map((i) => `${iname(i.ind)} (${f2(i.score)})`).join("; ") : t("prioNone")],
       [t("iStrong"), x.strong.length ? x.strong.map((i) => `${iname(i.ind)} (${f2(i.score)})`).join("; ") : t("strongNone")]
-    ].map((r) => r.map(clean));
+    ].concat(m.baseline ? [[`${t("iBase")} (${m.baseline.year})`, m.baseline.outside ? t("noBase") : !m.baseline.hasCmp ? t("noBaseCmp") :
+      [[t("lriOverall"), m.baseline.model.lri, m.baseline.cmp.lri]].concat(m.baseline.model.pillars.map((p, i) => [iname(p.pillar), p.score, m.baseline.cmp.pillars[i].score]))
+        .map((r) => `${r[0]}: ${r[1] == null ? "-" : f2(r[1])} -> ${r[2] == null ? "-" : f2(r[2])}${r[1] == null || r[2] == null ? "" : " (" + (r[2] - r[1] >= 0 ? "+" : "") + f2(r[2] - r[1]) + ")"}`).join("; ") + (m.baseline.applies ? "" : ". " + t("blScope"))]] : []).map((r) => r.map(clean));
     doc.autoTable(tableOpts({ body: rows, columnStyles: { 0: { fontStyle: "bold", cellWidth: 52, fillColor: [238, 243, 239] } }, styles: { fontSize: 8.5, cellPadding: 2, lineColor: [225, 222, 211], lineWidth: 0.1 } }));
     y = doc.lastAutoTable.finalY + 4;
 

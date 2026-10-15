@@ -102,7 +102,7 @@ js/data.js            Leitura paginada do Feature Service
 js/dashboard.js       Cartões, gráficos (Chart.js), mapa de calor e tabelas
 js/export.js          PDF (jsPDF), Excel (SheetJS) e CSV
 js/logos.js           Logos MOZ/SUSTAIN em base64 (para o PDF)
-js/app.js             Rotas (#dashboard, #tecnica/submissao, #tecnica/validacao)
+js/app.js             Rotas (#sobre é a página inicial, #dashboard, #documentos, #tecnica/submissao, #tecnica/validacao)
 data/documents.js   Lista de documentos da aba “Documentos”
 docs/                 PDFs (e docs/thumbs/ com as capas)
 tools/add_document.py Script para adicionar documentos

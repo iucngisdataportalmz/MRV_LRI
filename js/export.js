@@ -236,7 +236,7 @@
 
     // metodologia
     h2(t("secMethod"));
-    htmlToText(t("methodHtml")).split("\n").forEach((ln) => {
+    htmlToText("<h3>" + t("aboutFlowH") + "</h3>" + t("aboutFlowHtml") + t("methodHtml")).split("\n").forEach((ln) => {
       if (!ln.trim()) { y += 1.5; return; }
       const isH = !/^•|^\d/.test(ln) && ln.length < 48 && !/[.:]$/.test(ln);
       if (isH) { need(8); y += 1; doc.setFont("helvetica", "bold").setFontSize(10).setTextColor(47, 111, 85).text(clean(ln), M, y); y += 4.8; }

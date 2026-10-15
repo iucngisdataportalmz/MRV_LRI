@@ -6,6 +6,17 @@
       navDocs: "Documentos", docsTitle: "Documentos metodológicos", docsIntro: "Manuais, guias e outros documentos de referência do LRI para consulta e download.",
       docsPages: "págs.", docsOpen: "Abrir", docsNone: "Nenhum documento encontrado.", docsError: "Não foi possível carregar a lista de documentos.", methodDocs: "Ver documentos metodológicos para descarregar →",
       navDashboard: "Dashboard", navTech: "Área Técnica", navSubmit: "Submissão de dados", navValidate: "Validação de Dados",
+      navAbout: "Sobre o LRI", aboutTitle: "Sobre o LRI",
+      aboutGoalH: "Objetivo da plataforma",
+      aboutGoalP: "Esta plataforma apoia a Monitoria, Reporte e Verificação (MRV) do Land Resilience Index (LRI). Reúne os dados recolhidos no terreno nos distritos de Bárue e Vanduzi (Manica, Moçambique), mas esta ainda preparada pra receber informação de LRI de outros distritos, valida-os e apresenta o estado de resiliência da paisagem de forma pública e transparente, usando apenas dados validados.",
+      aboutWhatP: "O LRI resume o estado da paisagem num valor de 1 a 4, organizado em três pilares (Terra, Água e Resiliência) e 17 indicadores.",
+      aboutFlowH: "Do terreno ao Dashboard",
+      af1: "Recolha", af1d: "Formulário Survey123, sem login", af2: "Camada", af2d: "ArcGIS Online: todo o registo entra Pendente", af3: "Validação", af3d: "Técnico com login valida ou rejeita",
+      af4: "Cálculo", af4d: "Só registos Validados; LRI calculado no navegador", af5: "Dashboard", af5d: "Cartões, mapa, gráficos, PDF e Excel",
+      aboutFlowHtml: `<p>Os dados são recolhidos através de um formulário <strong>Survey123</strong> público e guardados no <strong>ArcGIS Online</strong> (Feature Service). Todo o novo registo entra com o estado <em>Pendente</em> (“Não Validado”). Um técnico, autenticado no <strong>ArcGIS Experience</strong>, passa-o a <em>Validado</em> ou <em>Rejeitado</em>. Este dashboard lê <strong>apenas</strong> os registos <em>Validados</em>; registos pendentes ou rejeitados nunca entram nos gráficos, tabelas ou no cálculo do LRI.</p>`,
+      aboutMethH: "Metodologia", aboutPlatH: "Onde encontrar cada coisa",
+      aboutPlat: `<ul><li><a href="#dashboard">Dashboard</a>: resultados do LRI, só com dados validados.</li><li><a href="#documentos">Documentos</a>: manuais e guias metodológicos.</li><li><a href="#tecnica/submissao">Área Técnica</a>: submissão e validação de dados (acesso restrito em parte).</li></ul>`,
+      secQuality: "Qualidade dos dados", qualityLink: "Ver a metodologia em Sobre o LRI",
       skip: "Saltar para o conteúdo",
       exportPdf: "Relatório PDF", exportXlsx: "Dados Excel", exportCsv: "CSV", download: "Descarregar",
       refresh: "Atualizar", updated: "Atualizado", demoBanner: "MODO DEMONSTRAÇÃO: dados fictícios apenas para pré-visualizar o layout.",
@@ -45,6 +56,10 @@
       flowSubmit: "Submissão", flowSubmitD: "Sem login: formulário Survey123", flowPending: "Pendente", flowPendingD: "Todo o novo registo",
       flowValidate: "Validação", flowValidateD: "Técnico com login ArcGIS", flowDash: "Dashboard", flowDashD: "Só dados Validados",
       tabSubmit: "Submissão de dados", tabTable: "Submissão usando tabela ↗", tabTableTip: "Abre numa nova janela (área restrita, pede palavra-passe)", tabValidate: "Validação de dados",
+      guideTitle: "Como usar esta área", guideWho: "Quem pode usar", guideFor: "Para que serve", guideHow: "Como usar",
+      g1Name: "1. Submissão de dados", g1Who: "Qualquer pessoa que recolhe dados no terreno. Não pede login.", g1For: "Enviar um registo de LRI (distrito, indicador, sub-indicador, valor, data e instituição) pelo formulário Survey123.", g1How: "Abra o separador «Submissão de dados», preencha o formulário e envie. O registo entra como Pendente e só aparece no Dashboard depois de validado.",
+      g2Name: "2. Submissão usando tabela", g2Who: "Só técnicos com acesso autorizado. É uma área restrita e pede palavra-passe.", g2For: "Submeter/Importar muitos dados de uma unica vez, usando tabela, diretamente na tabela da camada, em vez de preencher o formulário um a um.", g2How: "Clique em «Submissão usando tabela»: abre numa nova janela. Entre com a palavra-passe que lhe foi dada e de seguida clique em «Update data» e, seguir os passos seguintes que a plataforma irá mostrar.",
+      g3Name: "3. Validação de dados", g3Who: "Só o técnico validador, com conta ArcGIS Online. Pede login.", g3For: "Rever os registos Pendentes e decidir quais entram no LRI.", g3How: "Abra o separador «Validação de dados», entre com a sua conta, analise cada registo e mude o estado para Validado (entra no Dashboard) ou Regeitado (fica de fora). Se o login falhar dentro da página, use «Abrir em nova janela».",
       submitHead: "Submissão de dados (Survey123)", submitDesc: "Formulário público: não é necessário login. O registo é guardado como Pendente.",
       validateHead: "Validação de dados (ArcGIS Experience)", validateDesc: "Acesso restrito: inicie sessão com utilizador e palavra-passe do ArcGIS Online. Validado → aparece no Dashboard · Rejeitado → fica fora do Dashboard.",
       openNew: "Abrir em nova janela", embedHint: "Se o formulário não carregar aqui (bloqueio de cookies de terceiros no navegador), use “Abrir em nova janela”.",
@@ -55,8 +70,6 @@
       pdfCharts: "Gráficos", generating: "A gerar…",
       sheetSummary: "Resumo", sheetPillars: "Pilares", sheetInd: "Indicadores", sheetSub: "Sub-indicadores", sheetRec: "Registos", sheetHeat: "Mapa de calor",
       methodHtml: `
-<h3>Fluxo de dados</h3>
-<p>Os dados são recolhidos através de um formulário <strong>Survey123</strong> público e guardados no <strong>ArcGIS Online</strong> (Feature Service). Todo o novo registo entra com o estado <em>Pendente</em> (“Não Validado”). Um técnico, autenticado no <strong>ArcGIS Experience</strong>, passa-o a <em>Validado</em> ou <em>Rejeitado</em>. Este dashboard lê <strong>apenas</strong> os registos <em>Validados</em>; registos pendentes ou rejeitados nunca entram nos gráficos, tabelas ou no cálculo do LRI.</p>
 <h3>Cálculo do LRI</h3>
 <ol>
 <li><strong>Pontuação do sub-indicador:</strong> calcula-se o valor médio dos registos validados e converte-se numa pontuação de 1 a 4 com os limiares de classificação definidos para cada sub-indicador (ficheiro de referência SUSTAIN LHMI): 1 = Fraco, 2 = Moderado, 3 = Bom, 4 = Excelente.</li>
@@ -81,6 +94,17 @@
       navDocs: "Documents", docsTitle: "Methodological documents", docsIntro: "LRI handbooks, guides and other reference documents to read and download.",
       docsPages: "pp.", docsOpen: "Open", docsNone: "No documents found.", docsError: "Could not load the document list.", methodDocs: "See methodological documents to download →",
       navDashboard: "Dashboard", navTech: "Technical Area", navSubmit: "Data submission", navValidate: "Data Validation",
+      navAbout: "About LRI", aboutTitle: "About LRI",
+      aboutGoalH: "Purpose of the platform",
+      aboutGoalP: "This platform supports the Monitoring, Reporting and Verification (MRV) of the Land Resilience Index (LRI). It gathers the data collected in the field in the districts of Bárue and Vanduzi (Manica, Mozambique), but this one is still prepared to receive LRI information from other districts, validates it and presents the state of landscape resilience publicly and transparently, using validated data only.",
+      aboutWhatP: "The LRI summarises the state of the landscape in a value from 1 to 4, organised in three pillars (Land, Water and Resilience) and 17 indicators.",
+      aboutFlowH: "From the field to the Dashboard",
+      af1: "Collection", af1d: "Survey123 form, no login", af2: "Layer", af2d: "ArcGIS Online: every record enters Pending", af3: "Validation", af3d: "Technician with login validates or rejects",
+      af4: "Calculation", af4d: "Validated records only; LRI computed in the browser", af5: "Dashboard", af5d: "Cards, map, charts, PDF and Excel",
+      aboutFlowHtml: `<p>Data is collected through a public <strong>Survey123</strong> form and stored in <strong>ArcGIS Online</strong> (Feature Service). Every new record enters as <em>Pending</em> (“Não Validado”). A technician, signed in to the <strong>ArcGIS Experience</strong>, sets it to <em>Validated</em> or <em>Rejected</em>. This dashboard reads <strong>only</strong> <em>Validated</em> records; pending or rejected records never reach the charts, tables or the LRI calculation.</p>`,
+      aboutMethH: "Methodology", aboutPlatH: "Where to find what",
+      aboutPlat: `<ul><li><a href="#dashboard">Dashboard</a>: LRI results, from validated data only.</li><li><a href="#documentos">Documents</a>: methodological handbooks and guides.</li><li><a href="#tecnica/submissao">Technical Area</a>: data submission and validation (partly restricted access).</li></ul>`,
+      secQuality: "Data quality", qualityLink: "See the methodology in About LRI",
       skip: "Skip to content",
       exportPdf: "PDF report", exportXlsx: "Excel data", exportCsv: "CSV", download: "Download",
       refresh: "Refresh", updated: "Updated", demoBanner: "DEMO MODE: fictitious data, only to preview the layout.",
@@ -120,6 +144,10 @@
       flowSubmit: "Submission", flowSubmitD: "No login: Survey123 form", flowPending: "Pending", flowPendingD: "Every new record",
       flowValidate: "Validation", flowValidateD: "Technician with ArcGIS login", flowDash: "Dashboard", flowDashD: "Validated data only",
       tabSubmit: "Data submission", tabTable: "Submission using a table ↗", tabTableTip: "Opens in a new window (restricted area, password required)", tabValidate: "Data validation",
+      guideTitle: "How to use this area", guideWho: "Who can use it", guideFor: "What it is for", guideHow: "How to use it",
+      g1Name: "1. Data submission", g1Who: "Anyone collecting data in the field. No login required.", g1For: "Send an LRI record (district, indicator, sub-indicator, value, date and institution) through the Survey123 form.", g1How: "Open the “Data submission” tab, fill in the form and submit. The record enters as Pending and only appears on the Dashboard once validated.",
+      g2Name: "2. Submission using a table", g2Who: "Authorised technicians only. It is a restricted area and asks for a password.", g2For: "Work on the records directly in the layer table, instead of filling in the form one by one.", g2How: "Click “Submission using a table”: it opens in a new window. Sign in with the password you were given.",
+      g3Name: "3. Data validation", g3Who: "The validating technician only, with an ArcGIS Online account. Login required.", g3For: "Review Pending records and decide which ones enter the LRI.", g3How: "Open the “Data validation” tab, sign in, check each record and set its status to Validated (reaches the Dashboard) or Rejected (left out). If login fails inside the page, use “Open in new window”.",
       submitHead: "Data submission (Survey123)", submitDesc: "Public form: no login required. The record is saved as Pending.",
       validateHead: "Data validation (ArcGIS Experience)", validateDesc: "Restricted access: sign in with an ArcGIS Online username and password. Validated → appears on the Dashboard · Rejected → stays off the Dashboard.",
       openNew: "Open in new window", embedHint: "If the form does not load here (third-party cookies blocked by your browser), use “Open in new window”.",
@@ -130,8 +158,6 @@
       pdfCharts: "Charts", generating: "Generating…",
       sheetSummary: "Summary", sheetPillars: "Pillars", sheetInd: "Indicators", sheetSub: "Sub-indicators", sheetRec: "Records", sheetHeat: "Heatmap",
       methodHtml: `
-<h3>Data flow</h3>
-<p>Data is collected through a public <strong>Survey123</strong> form and stored in <strong>ArcGIS Online</strong> (Feature Service). Every new record enters as <em>Pending</em> (“Não Validado”). A technician, signed in to the <strong>ArcGIS Experience</strong>, sets it to <em>Validated</em> or <em>Rejected</em>. This dashboard reads <strong>only</strong> <em>Validated</em> records; pending or rejected records never reach the charts, tables or the LRI calculation.</p>
 <h3>LRI calculation</h3>
 <ol>
 <li><strong>Sub-indicator score:</strong> the mean value of validated records is converted into a 1–4 score using the classification thresholds defined for each sub-indicator (SUSTAIN LHMI reference file): 1 = Poor, 2 = Moderate, 3 = Good, 4 = Excellent.</li>

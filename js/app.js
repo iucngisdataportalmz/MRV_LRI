@@ -1,4 +1,4 @@
-/* Arranque: roteamento (#dashboard · #tecnica/submissao · #tecnica/validacao), idioma, carregamento de dados */
+/* Arranque: roteamento (#sobre (inicial) · #dashboard · #tecnica/submissao · #tecnica/validacao), idioma, carregamento de dados */
 (function () {
   const CFG = window.LRI_CONFIG, I = window.I18N, t = I.t, $ = (id) => document.getElementById(id);
   let loaded = false, loading = false, lastUpdate = null, isDemo = false;
@@ -16,13 +16,15 @@
 
   // ---- rotas
   function route() {
-    const h = (location.hash || "#dashboard").replace(/^#/, "");
+    const h = (location.hash || "#sobre").replace(/^#/, "");
     const [view, tab] = h.split("/");
-    const tech = view === "tecnica", docs = view === "documentos";
-    $("view-dashboard").hidden = tech || docs; $("view-tecnica").hidden = !tech; $("view-docs").hidden = !docs;
-    $("nav-dashboard").setAttribute("aria-current", !tech && !docs ? "page" : "false");
+    const tech = view === "tecnica", docs = view === "documentos", dash = view === "dashboard", about = !tech && !docs && !dash;
+    $("view-dashboard").hidden = !dash; $("view-tecnica").hidden = !tech; $("view-docs").hidden = !docs; $("view-about").hidden = !about;
+    $("nav-dashboard").setAttribute("aria-current", dash ? "page" : "false");
+    $("nav-about").setAttribute("aria-current", about ? "page" : "false");
     $("nav-docs").setAttribute("aria-current", docs ? "page" : "false");
     $("nav-tecnica").setAttribute("aria-current", tech ? "page" : "false");
+    if (about) { window.scrollTo(0, 0); return; }
     if (docs) { window.LRI_DOCS.load(); window.scrollTo(0, 0); return; }
     if (tech) {
       const which = tab === "validacao" ? "validacao" : "submissao";

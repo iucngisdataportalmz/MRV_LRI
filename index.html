@@ -18,10 +18,11 @@
       <span class="sep" aria-hidden="true"></span>
       <img src="assets/logo-sustain.png" alt="SUSTAIN — Sustainability and Inclusion Strategy for Growth Corridors in Africa" class="logo-sustain" height="38">
     </div>
-    <a class="brand" href="#dashboard" aria-label="LRI">
+    <a class="brand" href="#sobre" aria-label="LRI">
       <span><strong data-i18n="appName">Land Resilience Index</strong><small data-i18n="appSub">Plataforma MRV</small></span>
     </a>
     <nav class="nav" aria-label="Principal">
+      <a href="#sobre" id="nav-about" data-i18n="navAbout">Sobre o LRI</a>
       <a href="#dashboard" id="nav-dashboard" data-i18n="navDashboard">Dashboard</a>
       <a href="#documentos" id="nav-docs" data-i18n="navDocs">Documentos</a>
       <a href="#tecnica/submissao" id="nav-tecnica" data-i18n="navTech">Técnica</a>
@@ -37,7 +38,7 @@
 
 <main id="main">
 <!-- ===================== DASHBOARD ===================== -->
-<section id="view-dashboard" class="view">
+<section id="view-dashboard" class="view" hidden>
   <div class="wrap">
     <div id="demo-banner" class="banner demo" hidden data-i18n="demoBanner"></div>
 
@@ -127,12 +128,43 @@
       <article class="card full"><h3 data-i18n="secInst">Contribuição das instituições</h3><p class="muted small" data-i18n="instSub"></p><div class="chart"><canvas id="c-inst" role="img"></canvas></div><p class="muted small" id="inst-note"></p></article>
 
       <article class="card full prose" id="method">
-        <h2 data-i18n="secMethod">Metodologia e qualidade dos dados</h2>
-        <div id="method-body" data-i18n-html="methodHtml"></div>
+        <h2 data-i18n="secQuality">Qualidade dos dados</h2>
         <div id="quality"></div>
-        <p class="docs-link"><a href="#documentos" data-i18n="methodDocs">Ver documentos metodológicos</a></p>
+        <p class="docs-link"><a href="#sobre" data-i18n="qualityLink">Ver a metodologia em Sobre o LRI</a></p>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ===================== SOBRE O LRI ===================== -->
+<section id="view-about" class="view">
+  <div class="wrap">
+    <h2 class="sec first" data-i18n="aboutTitle">Sobre o LRI</h2>
+    <article class="card full prose">
+      <h3 data-i18n="aboutGoalH"></h3>
+      <p data-i18n="aboutGoalP"></p>
+      <p data-i18n="aboutWhatP"></p>
+    </article>
+    <article class="card full prose">
+      <h3 data-i18n="aboutFlowH"></h3>
+      <ol class="flow five" aria-label="workflow">
+        <li><b data-i18n="af1"></b><span data-i18n="af1d"></span></li>
+        <li class="s-pend"><b data-i18n="af2"></b><span data-i18n="af2d"></span></li>
+        <li><b data-i18n="af3"></b><span data-i18n="af3d"></span></li>
+        <li><b data-i18n="af4"></b><span data-i18n="af4d"></span></li>
+        <li class="s-ok"><b data-i18n="af5"></b><span data-i18n="af5d"></span></li>
+      </ol>
+      <div data-i18n-html="aboutFlowHtml"></div>
+    </article>
+    <article class="card full prose">
+      <h3 data-i18n="aboutMethH"></h3>
+      <div data-i18n-html="methodHtml"></div>
+      <p class="docs-link"><a href="#documentos" data-i18n="methodDocs">Ver documentos metodológicos</a></p>
+    </article>
+    <article class="card full prose">
+      <h3 data-i18n="aboutPlatH"></h3>
+      <div data-i18n-html="aboutPlat"></div>
+    </article>
   </div>
 </section>
 
@@ -154,6 +186,30 @@
   <div class="wrap">
     <h2 class="sec first" data-i18n="techTitle">Área técnica</h2>
     <p class="note" data-i18n="techIntro"></p>
+
+    <section class="guide" aria-labelledby="guide-t">
+      <h3 id="guide-t" data-i18n="guideTitle">Como usar esta área</h3>
+      <div class="guide-grid">
+        <article class="gcard">
+          <h4 data-i18n="g1Name"></h4>
+          <p><b data-i18n="guideWho"></b><span data-i18n="g1Who"></span></p>
+          <p><b data-i18n="guideFor"></b><span data-i18n="g1For"></span></p>
+          <p><b data-i18n="guideHow"></b><span data-i18n="g1How"></span></p>
+        </article>
+        <article class="gcard">
+          <h4 data-i18n="g2Name"></h4>
+          <p><b data-i18n="guideWho"></b><span data-i18n="g2Who"></span></p>
+          <p><b data-i18n="guideFor"></b><span data-i18n="g2For"></span></p>
+          <p><b data-i18n="guideHow"></b><span data-i18n="g2How"></span></p>
+        </article>
+        <article class="gcard">
+          <h4 data-i18n="g3Name"></h4>
+          <p><b data-i18n="guideWho"></b><span data-i18n="g3Who"></span></p>
+          <p><b data-i18n="guideFor"></b><span data-i18n="g3For"></span></p>
+          <p><b data-i18n="guideHow"></b><span data-i18n="g3How"></span></p>
+        </article>
+      </div>
+    </section>
 
     <ol class="flow" aria-label="workflow">
       <li><b data-i18n="flowSubmit">Submissão</b><span data-i18n="flowSubmitD"></span></li>

@@ -234,3 +234,20 @@ html,body{overflow-x:hidden}
 .bl .up,.dl.up{color:#1f8a4c;font-weight:700}.bl .dn,.dl.dn{color:#c23b2e;font-weight:700}.bl .eq,.dl.eq{color:var(--ink2)}
 .kpi.main .bl .up{color:#9be0b0}.kpi.main .bl .dn{color:#ffb4a8}.kpi.main .bl .eq{color:#fff}
 table.blt{width:100%}table.blt td.num,table.blt th.num{text-align:right}
+
+/* guia da área técnica */
+.guide{margin:14px 0}
+.guide h3{margin:0 0 10px;font-size:15.5px}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gcard{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);border-top:4px solid var(--brand2);min-width:0}
+.gcard h4{margin:0 0 8px;font-size:14.5px}
+.gcard p{margin:0 0 8px;font-size:13px;line-height:1.45;color:var(--ink2)}
+.gcard p:last-child{margin-bottom:0}
+.gcard b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-bottom:1px}
+@media (max-width:900px){.guide-grid{grid-template-columns:1fr}}
+
+/* Sobre o LRI */
+.flow.five{grid-template-columns:repeat(5,1fr)}
+@media (max-width:900px){.flow.five{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.flow.five{grid-template-columns:1fr}}
+@media (max-width:560px){.nav{flex-wrap:wrap;margin-left:0}.nav a{padding:7px 11px;font-size:14px}}

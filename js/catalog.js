@@ -16,7 +16,7 @@
   const PILLARS = [
     { id: "terra", pt: "Terra", en: "Land", color: "#8a6a3b" },
     { id: "agua", pt: "Água", en: "Water", color: "#2b7fb5" },
-    { id: "resil", pt: "Resiliência", en: "Resilience", color: "#7a5aa6" }
+    { id: "resil", pt: "Capacidade Adaptativa", en: "Adaptive Capacity", color: "#7a5aa6" }
   ];
 
   const IND = [
